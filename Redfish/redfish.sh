@@ -558,7 +558,7 @@ case ${test_type} in
 #./redfish {bmcip} {Command} {Command} {Command}
 
 [Note] 
-0. This scrip based on Redfish Test Plan
+0. This scrip based on Redfish 1.2.1 Test Plan
 1. Make sure ipmitool sheet already be test.
 2. Install jq software for JSON format readable.
    #apt-get install jq
