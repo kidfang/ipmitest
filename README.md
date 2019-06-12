@@ -2,7 +2,7 @@
 git clone https://github.com/kidfang/ipmitest.git
 
 # Samba_server_under_centos
-if link to smba folder fail please restart samba service
+if connect to smba folder failed please restart samba service and retry
 
 systemctrl restart smb.service
 
