@@ -25,7 +25,7 @@ for (( i=1; i<=$num; i=i+1 ));
 		Sensor_Number=$(echo $SDR_con | cut -f 10 -d " ")
 		next=$(echo $SDR_con | cut -f 1 -d " ")
 
-		case ${Record_type} in    # Set the start byte for ID string ASCII transfer
+		case ${Record_type} in    # Set the start byte for ID string ASCII transform
 				"01")
 				Start=51
 				;;
