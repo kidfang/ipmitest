@@ -9,3 +9,5 @@ apt install python -y
 
 cpupower frequency-set -r -g performance
 cpupower frequency-info | grep \"performance\"
+
+chmod -R 777 /usr/cpu2017/*
