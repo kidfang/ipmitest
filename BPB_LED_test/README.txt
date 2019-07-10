@@ -3,7 +3,7 @@ Booting to Linux based OS, SGPIO signals are disappeared. Below is patch for Lin
 1.	Execute below commands to config AHCI driver to patch issue of SGPIO signal disappeared 
 2.	#sudo vi /etc/default/grub
 3.	Add “libahci.ahci_em_messages=0” in GRUB_CMDLINE_LINUX as below.
-
+4.  
 GRUB_DEFAULT=0
 GRUB_TIMEOUT_STYLE=hidden
 GRUB_TIMEOUT=2
