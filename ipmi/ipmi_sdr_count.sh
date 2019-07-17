@@ -9,7 +9,7 @@ num=$(ipmitool -H ${bmcip} -U admin -P password -I lanplus sdr info | grep -i Re
 next=0
 
 for (( i=1; i<=$num; i=i+1 ));
-	do	
+	do
 		DEX_to_HEX=$(echo "ibase=10;obase=16;$i"|bc)
 		check=$(ipmitool -H ${bmcip} -U admin -P password -I lanplus raw 0x0a 0x22)
 		check_a=$(echo $check | cut -f 1 -d " ")
@@ -26,9 +26,9 @@ for (( i=1; i<=$num; i=i+1 ));
 		next=$(echo $SDR_con | cut -f 1 -d " ")
 
 		case ${Record_type} in    # Set the start byte for ID string ASCII transform
-				"01")
-				Start=51
-				;;
+		 														"01")
+																Start=51
+																;;
                                 "02")
                                 Start=35
                                 ;;
@@ -63,12 +63,12 @@ for (( i=1; i<=$num; i=i+1 ));
 #01 => 49
 #02 => 33
 #03 => 18
-#08 => 
-#09 => 
+#08 =>
+#09 =>
 #0A:0F =>
 #10 => 17
 #11 => 17
 #12 => 17
-#13 => 
-#14 => 
+#13 =>
+#14 =>
 #C0 =>
