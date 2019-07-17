@@ -45,7 +45,9 @@ lan()
 sol()
 
 {
-
+bmcip=$1
+bmc_user=$2
+bmc_password=$3
 sol_test=( "set-in-progress" "force-encryption" "force-authentication" "force-authentication" "privilege-level" "character-accumulate-level" "character-send-threshold" "retry-count" "retry-interval" "non-volatile-bit-rate" "volatile-bit-rate" )
 set_in_progress=( "set-complete" "set-in-progress" )
 encryption=( "true" "false" )  # force-encryption , force-authentication
@@ -66,13 +68,13 @@ bit_rate=( "9.6" "19.2" "38.4" "57.6" "115.2" )   # non-volatile-bit-rate , vola
           sol_loop=( $2 )
           for (( n=0; n<$1; n=n+1 ));
             do
-                ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol ${sol_test[$k]} ${sol_loop{$n}}
+                ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol ${sol_test[$k]} ${sol_loop[$n]}
                 ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol info 1
                 read -n 1 -p "If it is correct by : $i , Press Enter to test next one ... "
             done
         }
 
-        case item in
+        case ${item} in
            1)
 
            loop ${#set_in_progress[@]} ${set_in_progress[@]}
@@ -91,28 +93,28 @@ bit_rate=( "9.6" "19.2" "38.4" "57.6" "115.2" )   # non-volatile-bit-rate , vola
 }
 
 
-case test_type in
-  fru)
+case ${test_type} in
+  "fru")
   echo "Start to test SKU/FRU ... "
   SKU_FRU 1
   ;;
 
-  mc)
+  "mc")
   echo "Start to test mc ... "
   mc 1
   ;;
 
-  lan)
+  "lan")
   echo "Start to test lan item ... "
   lan 1
   ;;
 
-  sol)
+  "sol")
   echo "Start to test sol item ... "
-  sol 1
+  sol $bmcip $bmc_user $bmc_password
   ;;
 
-  all)
+  "all")
   echo "Start to test all item ... "
   SKU_FRU 1
   mc 1
