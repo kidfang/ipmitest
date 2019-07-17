@@ -1,4 +1,4 @@
-bmcip=$1
+bmc_ip=$1
 bmc_user=admin
 bmc_password=password
 
@@ -6,10 +6,10 @@ echo -e "\nPlease input the test type (fru/mc/lan/sol/all): "
 read test_type
 
 
-SUT_name=$(ipmitool -I lanplus -H ${bmcip} -U admin -P password fru print 1 | grep -i "Product Name" | cut -f 14 -d " ")
+SUT_name=$(ipmitool -I lanplus -H ${bmc_ip} -U admin -P password fru print 1 | grep -i "Product Name" | cut -f 14 -d " ")
 
 echo -e "\nProduct name: $SUT_name"
-echo "Product BMC ip: ${bmcip}"
+echo "Product BMC ip: ${bmc_ip}"
 
 
 
@@ -45,7 +45,7 @@ lan()
 sol()
 
 {
-bmcip=$1
+bmc_ip=$1
 bmc_user=$2
 bmc_password=$3
 sol_test=( "set-in-progress" "force-encryption" "force-authentication" "force-authentication" "privilege-level" "character-accumulate-level" "character-send-threshold" "retry-count" "retry-interval" "non-volatile-bit-rate" "volatile-bit-rate" )
@@ -68,7 +68,7 @@ bit_rate=( "9.6" "19.2" "38.4" "57.6" "115.2" )   # non-volatile-bit-rate , vola
           sol_loop=( $2 )
           for (( n=0; n<$1; n=n+1 ));
             do
-                ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol ${sol_test[$k]} ${sol_loop[$n]}
+                ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol ${sol_test[$k]} ${sol_loop[$n]} 1
                 ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol info 1
                 read -n 1 -p "If it is correct by : $i , Press Enter to test next one ... "
             done
@@ -111,7 +111,7 @@ case ${test_type} in
 
   "sol")
   echo "Start to test sol item ... "
-  sol $bmcip $bmc_user $bmc_password
+  sol $bmc_ip $bmc_user $bmc_password
   ;;
 
   "all")
