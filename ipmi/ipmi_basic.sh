@@ -47,13 +47,13 @@ sol()
 {
 
 sol_test=( "set-in-progress" "force-encryption" "force-authentication" "force-authentication" "privilege-level" "character-accumulate-level" "character-send-threshold" "retry-count" "retry-interval" "non-volatile-bit-rate" "volatile-bit-rate" )
-set-in-progress=( "set-complete" "set-in-progress" )
+set_in_progress=( "set-complete" "set-in-progress" )
 encryption=( "true" "false" )  # force-encryption , force-authentication
-privilege-level=( "user" "operator" "admin" )
+privilege_level=( "user" "operator" "admin" )
 level=( "64" "128" "255" ) # character-accumulate-level , character-send-threshold
-retry-count=("0~7")
-retry-interval=("0" "128" "255")
-bit-rate=( "9.6" "19.2" "38.4" "57.6" "115.2" )   # non-volatile-bit-rate , volatile-bit-rate
+retry_count=("0~7")
+retry_interval=("0" "128" "255")
+bit_rate=( "9.6" "19.2" "38.4" "57.6" "115.2" )   # non-volatile-bit-rate , volatile-bit-rate
 
   for (( i=1; i<=${#sol_test[@]}; i=i+1 ));
     do
@@ -75,7 +75,7 @@ bit-rate=( "9.6" "19.2" "38.4" "57.6" "115.2" )   # non-volatile-bit-rate , vola
         case item in
            1)
 
-           loop ${#set-in-progress[@]} ${set-in-progress[@]}
+           loop ${#set_in_progress[@]} ${set_in_progress[@]}
             ;;
         esac
 
@@ -123,5 +123,5 @@ case test_type in
   *)
   echo "???????????????????????????????????????????"
   ;;
-  
+
 esac
