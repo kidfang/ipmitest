@@ -63,7 +63,7 @@ encryption=( "true" "false" )  # force-encryption , force-authentication
 privilege_level=( "user" "operator" "admin" )
 level=( "64" "128" "255" ) # character-accumulate-level , character-send-threshold
 ##retry_count=("0~7")
-retry_interval=("0" "128" "255")
+retry_interval=( "0" "128" "255" )
 bit_rate=( "9.6" "19.2" "38.4" "57.6" "115.2" )   # non-volatile-bit-rate , volatile-bit-rate
 
 for (( i=0; i<${#set_in_progress[@]}; i=i+1 ));
@@ -125,7 +125,7 @@ for (( i=0; i<8; i=i+1 ));
 for (( i=0; i<${#retry_interval[@]}; i=i+1 ));
   do
     RTI=$(( ${retry_interval[$i]} * 10 ))
-    ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol retry-interval ${retry_interval[$i]} 1
+    ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol set retry-interval ${retry_interval[$i]} 1
     ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol info 1
     echo -e "\n----------------------------------------\n"
     read -n 1 -p "Check 'Retry Interval (ms)' is $RTI , Press Enter to test next one ... "
