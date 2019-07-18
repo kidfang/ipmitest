@@ -115,7 +115,7 @@ for (( i=0; i<${#level[@]}; i=i+1 ));
 
 for (( i=0; i<8; i=i+1 ));
   do
-    ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol set retry_count $i 1
+    ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol set retry-count $i 1
     ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol info 1
     echo -e "\n----------------------------------------\n"
     read -n 1 -p "Check 'Retry Count' is $i , Press Enter to test next one ... "
