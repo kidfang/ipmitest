@@ -58,7 +58,7 @@ bmc_user=$2
 bmc_password=$3
 ##sol_test=( "set-in-progress" "force-encryption" "force-authentication" "privilege-level" "character-accumulate-level" "character-send-threshold" "retry-count" "retry-interval" "non-volatile-bit-rate" "volatile-bit-rate" )
 
-set_in_progress=( "set-complete" "set-in-progress" )
+set_in_progress=( "set-in-progress" "set-complete" )
 encryption=( "true" "false" )  # force-encryption , force-authentication
 privilege_level=( "user" "operator" "admin" )
 level=( "64" "128" "255" ) # character-accumulate-level , character-send-threshold
