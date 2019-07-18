@@ -2,9 +2,8 @@ bmc_ip=$1
 bmc_user=admin
 bmc_password=password
 
-echo -e "\nPlease input the test type (fru/mc/lan/sol/channel/all): "
+echo -e "\nPlease input the test type (fru/mc/lan/sol/channel/all): \n"
 read test_type
-
 
 SUT_name=$(ipmitool -I lanplus -H ${bmc_ip} -U admin -P password fru print 1 | grep -i "Product Name" | cut -f 14 -d " ")
 
@@ -175,40 +174,41 @@ channel()
 
 case ${test_type} in
   "fru")
-  echo "Start to test SKU/FRU ... "
+  echo -e "\nStart to test SKU/FRU ... \n"
   SKU_FRU 1
   ;;
 
   "mc")
-  echo "Start to test mc ... "
+  echo -e "\nStart to test mc ... \n"
   mc 1
   ;;
 
   "lan")
-  echo "Start to test lan item ... "
+  echo -e "\nStart to test lan item ... \n"
   lan 1
   ;;
 
   "sol")
-  echo "Start to test sol item ... "
+  echo -e "\nStart to test sol item ... \n"
   sol $bmc_ip $bmc_user $bmc_password
   ;;
 
   "channel")
-  echo "Start to test sol item ... "
+  echo -e "\nStart to test sol item ... \n"
   channel 1
   ;;
 
   "all")
-  echo "Start to test all item ... "
+  echo -e "\nStart to test all item ... \n"
   SKU_FRU 1
   mc 1
   lan 1
   sol 1
+  channel 1
   ;;
 
   *)
-  echo "???????????????????????????????????????????"
+  echo "\n???????????????????????????????????????????\n"
   ;;
 
 esac
