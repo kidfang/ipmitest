@@ -77,7 +77,7 @@ for (( i=0; i<${#set_in_progress[@]}; i=i+1 ));
 
 for (( i=0; i<${#encryption[@]}; i=i+1 ));
   do
-    ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol set force-encryptions ${encryption[$i]} 1
+    ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol set force-encryption ${encryption[$i]} 1
     ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol info 1
     echo -e "\n----------------------------------------\n"
     read -n 1 -p "Check 'Force Encryption' is ${encryption[$i]} , Press Enter to test next one ... "
