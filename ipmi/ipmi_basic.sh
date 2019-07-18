@@ -100,7 +100,7 @@ for (( i=0; i<${#privilege_level[@]}; i=i+1 ));
 
 for (( i=0; i<${#level[@]}; i=i+1 ));
   do
-    CAL=$(( $i * 5 ))
+    CAL=$(( ${level[$i]} * 5 ))
     ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol set character-accumulate-level ${level[$i]} 1
     ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol info 1
     echo -e "\n----------------------------------------\n"
@@ -124,7 +124,7 @@ for (( i=0; i<8; i=i+1 ));
 
 for (( i=0; i<${#retry_interval[@]}; i=i+1 ));
   do
-    RTI=$(( $i * 10 ))
+    RTI=$(( ${retry_interval[$i]} * 10 ))
     ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol retry-interval ${retry_interval[$i]} 1
     ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} sol info 1
     echo -e "\n----------------------------------------\n"
