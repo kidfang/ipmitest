@@ -30,7 +30,7 @@ mc()
   mc_test=( "info 1" "selftest" "getenables" )
   for (( i=0; i<=2; i=i+1 ));
   	do
-      ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} mc ${mc_test[$i]} | tee ipmi_"$SUT_name"_mc_${mc_test[$i]}.txt
+      ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} mc ${mc_test[$i]} | tee ipmi_"$SUT_name"_mc_"${mc_test[$i]}".txt
       echo -e "\n----------------------------------------\n"
     done
 }
@@ -40,10 +40,10 @@ mc()
 lan()
 
 {
-  lan_test=( "print 1" "set 1 snmp" )
+  lan_test=( "print 1" "set 1 snmp GIGABYTE" )
   for (( i=0; i<=1; i=i+1 ));
   	do
-      ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} lan ${lan_test[$i]} | tee ipmi_"$SUT_name"_lan_${lan_test[$i]}.txt
+      ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} lan ${lan_test[$i]} | tee ipmi_"$SUT_name"_lan_"${lan_test[$i]}".txt
       echo -e "\n----------------------------------------\n"
     done
 }
@@ -158,7 +158,7 @@ channel()
 
   for (( i=0; i<${#channel_info[@]}; i=i+1 ));
     do
-      ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} channel info ${channel_info[$i]} | tee ipmi_"$SUT_name"_channel_info_${#channel_info[$i]}.txt
+      ipmitool -I lanplus -H ${bmc_ip} -U ${bmc_user} -P ${bmc_password} channel info ${channel_info[$i]} | tee ipmi_"$SUT_name"_channel_info_"${channel_info[$i]}".txt
       echo -e "\n----------------------------------------\n"
     done
 
