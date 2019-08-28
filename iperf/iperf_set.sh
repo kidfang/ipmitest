@@ -16,6 +16,8 @@ cpupower frequency-set -g performance
 modprobe cpufreq_ondemand
 tuned-adm profile latency-performance
 
+mlnx_tune -p HIGH_THROUGHPUT
+
 #ifconfig $eth_a $ip_a up
 ifconfig $eth_a mtu 9000
 
@@ -32,6 +34,8 @@ cpu_a=$(lscpu | grep -i numa | grep -i node$numa_a | cut -f 8 -d " ")
 echo -e "\nCheck this path have set_irq_affinity_cpulist.sh or this scrip will cannot action!\n"
 
 set_irq_affinity_cpulist.sh $cpu_a $eth_a
+
+setpci -s $mac_add_a 68.w=5957
 
 echo -e "\nDevice: $eth_a, Mac_Address: $mac_add_a, Numa_node: $numa_a, CPU_core: $cpu_a, IP: $ip_a\n"
 ethtool -g $eth_a
