@@ -1,3 +1,5 @@
+#Support max 2ports ib lan card
+
 eth_a=$1
 ip_a=$2
 
