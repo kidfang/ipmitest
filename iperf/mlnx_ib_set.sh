@@ -5,6 +5,15 @@ ip_a=$2
 
 ifconfig "$eth_a" "$ip_a" up
 
+cpupower frequency-set -g performance
+modprobe cpufreq_ondemand
+tuned-adm profile latency-performance
+
+mlnx_tune -p HIGH_THROUGHPUT
+
+mac_add_a=$(ethtool -i $eth_a | grep -i bus-info | cut -f 2 -d " ")
+setpci -s $mac_add_a 68.w=5957
+
 #lan_num=$(ibv_devinfo | grep -i vendor_part_id | wc -l)
 hca_id=$(mst status -v | grep -i $eth_a | awk '{print $4}')
 lan_num=$(mst status -v | grep -i $eth_a | awk '{print $4}' | cut -f 2 -d "_")
