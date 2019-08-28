@@ -21,10 +21,10 @@ else
   
   if [ $test_sut = RX ]; then
     #RX
-    numactl -N $test_numa -l ib_read_bw -t 256 -b -d "$test_vid"_0 -D 66 --report_gbits --cpu_util -p 18516 & numactl -N $test_numa -l ib_read_bw -t 256 -b -d "$test_vid"_1 -D 66 --report_gbits --cpu_util -p 18517
+    numactl -N $test_numa -l ib_write_bw -t 256 -b -d "$test_vid"_0 -D 66 --report_gbits --cpu_util -p 18516 & numactl -N $test_numa -l ib_read_bw -t 256 -b -d "$test_vid"_1 -D 66 --report_gbits --cpu_util -p 18517
   else
     #TX
-    numactl -N $test_numa -l ib_read_bw -t 256 -b -d "$test_vid"_0 -D 66 --report_gbits --cpu_util $test_ip -p 18516 & numactl -N $test_numa -l ib_read_bw -t 256 -b -d "$test_vid"_1 -D 66 --report_gbits --cpu_util $test_ip -p 18517
+    numactl -N $test_numa -l ib_write_bw -t 256 -b -d "$test_vid"_0 -D 66 --report_gbits --cpu_util $test_ip -p 18516 & numactl -N $test_numa -l ib_read_bw -t 256 -b -d "$test_vid"_1 -D 66 --report_gbits --cpu_util $test_ip -p 18517
   fi
   
 fi
