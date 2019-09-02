@@ -18,8 +18,8 @@ ifconfig $eth_a mtu 9000
 
 if [ $test_sut = RX ]; then
     #RX
-    taskset -c $cpu_core ib_write_bw -d "$test_vid"_0 -F -p 18000 --report_gbits --run_infinitely $test_ip_0 & taskset -c $cpu_core ib_write_bw -d "$test_vid"_1 -F -p 19000 --report_gbits --run_infinitely $test_ip_1
+    taskset -c $cpu_core ib_write_bw -d "$test_vid"_0 -F -p 18000 --report_gbits --run_infinitely & taskset -c $cpu_core ib_write_bw -d "$test_vid"_1 -F -p 19000 --report_gbits --run_infinitely
 else
     #TX
-    taskset -c $cpu_core ib_write_bw -d "$test_vid"_0 -F -p 18000 --report_gbits --run_infinitely & taskset -c $cpu_core ib_write_bw -d "$test_vid"_1 -F -p 19000 --report_gbits --run_infinitely 
+    taskset -c $cpu_core ib_write_bw -d "$test_vid"_0 -b -F -p 18000 --report_gbits --run_infinitely $test_ip_0 & taskset -c $cpu_core ib_write_bw -d "$test_vid"_1 -b -F -p 19000 --report_gbits --run_infinitely $test_ip_1 
 fi
