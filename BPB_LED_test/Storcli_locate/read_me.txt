@@ -1,6 +1,3 @@
-
-
-
 1. Installing debian Package
 	sudo dpkg -i storcli_1.0_all.deb
 
@@ -9,4 +6,3 @@
 
 3. Run the commands    with super user as below.
 	sudo /opt/MegaRAID/storcli/storcli adpcount
-
