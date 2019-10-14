@@ -10,8 +10,8 @@ s=$( ipmitool sel list | grep -i interrupt )
 t=$( ipmitool sel list | wc -l )
 u=$( dmesg | grep -i corrected | wc -l )
 v=$( ipmitool sel list | grep -i interrupt | wc -l )
-w=$( lspci | grep NVIDIA | wc -l )
-x=$( lsscsi | wc -l )
+w=$( lspci | grep -i NVIDIA | wc -l )    # AMD GPU card need change to vega
+x=$( lsscsi | wc -l )                    # Need check yourself
 y=$( cat /root/count.txt )
 z=$( ls /root | grep count.txt | wc -l )
 
@@ -41,8 +41,8 @@ fi
 # monitor the event listed the PCIe Error.
 # command to Power Cycle is -> ipmitool chassis power cycle
 
-if [ $x -eq 1 ];then
-	if [ $w -eq 8 ];then
+if [ $x -eq 1 ];then    # Need check yourself
+	if [ $w -eq 8 ];then  # Need check yourself
 		if [ $v -eq 0 ] && [ $u -eq 0 ];then
 			date >> /root/rebootrec.txt
 			echo PASS >> /root/rebootrec.txt
@@ -62,5 +62,8 @@ if [ $x -eq 1 ];then
 	fi
 else
 	echo {Other error or stopped by user}
+	dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" > /root/dmesg_reboot_done.txt
+	dmesg > /root/dmesg_reboot_done_all.txt
+	ipmitool sel list > /root/ipmi_reboot_done_eventlog.txt
 	exit 0
 fi
