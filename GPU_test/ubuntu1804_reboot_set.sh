@@ -1,8 +1,10 @@
+ln -fs /lib/systemd/system/rc-local.service /etc/systemd/system/rc-local.service
+
 echo "
 [Install]
 WantedBy=multi-user.target
 Alias=rc-local.service
-" >> etc/systemd/system/rc-local.service
+" >> /etc/systemd/system/rc-local.service
 
 touch /etc/rc.local
 
