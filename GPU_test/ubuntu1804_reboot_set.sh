@@ -8,9 +8,8 @@ Alias=rc-local.service
 
 touch /etc/rc.local
 
-chmod -R 777 /etc/rc.local
+chmod +x /etc/rc.local
 
-echo "
-#!/bin/bash
+echo "#!/bin/bash
 /home/smbuser/reboot.sh
 " > /etc/rc.local
