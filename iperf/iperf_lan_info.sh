@@ -13,4 +13,4 @@ ethtool -i $eth_a | tee lan"$lan_num"_info_fw.txt
 
 cat lspci_lan* | grep -i lnksta: > lnksta_all.txt
 
-
+ifconfig | tee ifconfig.txt
