@@ -1,0 +1,11 @@
+[root@localhost smbuser]# rpm -ivh elfutils-libelf-devel-0.174-1.el8.x86_64.rpm
+warning: elfutils-libelf-devel-0.174-1.el8.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID fd431d51: NOKEY
+error: Failed dependencies:
+        elfutils-libelf(x86-64) = 0.174-1.el8 is needed by elfutils-libelf-devel-0.174-1.el8.x86_64
+
+[root@localhost smbuser]# rpm -ivh elfutils-libelf-devel-0.174-1.el8.x86_64.rpm --force --nodeps
+warning: elfutils-libelf-devel-0.174-1.el8.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID fd431d51: NOKEY
+Verifying...                          ################################# [100%]
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:elfutils-libelf-devel-0.174-1.el8################################# [100%]
