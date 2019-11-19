@@ -18,7 +18,7 @@ options nouveau modeset=0 " > /etc/modprobe.d/blacklist-nouveau.conf
 
 dracut -f
 
-echo -e "/n Install completed, plz reboot system"
+echo -e "\n Install completed, plz reboot system"
 
 
 }
