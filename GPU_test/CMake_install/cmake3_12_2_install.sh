@@ -1,4 +1,5 @@
 #CMake 3.12.2 Download and install
+#https://github.com/Kitware/CMake/releases
 
 #Download CMake 3.12.2
 wget https://github.com/Kitware/CMake/archive/v3.12.2.tar.gz
