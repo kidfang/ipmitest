@@ -5,6 +5,14 @@ test_type=$2
 sys_num=$3
 sys_file=$4
 
+red_user=admin
+red_pw=password
+
+#red_user=Administrator
+#red_pw=superuser
+
+#$red_user:$red_pw
+
 SUT_name=$(ipmitool -I lanplus -H ${bmcip} -U admin -P password fru print 1 | grep -i "Product Name" | cut -f 14 -d " ")
 
 echo -e "\nProduct name: $SUT_name"
@@ -15,13 +23,13 @@ echo "Product BMC ip: ${bmcip}"
 Reset_Type()
 {
 echo "Reset_Type: $1"
-eval curl -k -u Administrator:superuser -H "content-type:application/json" -d '{\"ResetType\":\"$1\"}' -X POST https://$bmcip/redfish/v1/Systems/Self/Actions/ComputerSystem.Reset
+eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -d '{\"ResetType\":\"$1\"}' -X POST https://$bmcip/redfish/v1/Systems/Self/Actions/ComputerSystem.Reset
 }
 
 IndicatorLED()
 {
 echo "IndicatorLED: $1"
-eval curl -k -u Administrator:superuser -H "content-type:application/json" -d '{\"IndicatorLED\":\"$1\"}' -X PATCH https://$bmcip/redfish/v1/Systems/Self
+eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -d '{\"IndicatorLED\":\"$1\"}' -X PATCH https://$bmcip/redfish/v1/Systems/Self
 }
 
 #######################################
@@ -36,18 +44,18 @@ bs_m=$4
 
 if [ $bs_e = 1 ]; then
 	echo -e "\n-------------------------\n\n[Check BootSource status]\n"
-	curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Systems/Self | jq '.Boot.BootSourceOverrideTarget, .Boot.BootSourceOverrideEnabled'
+	curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Systems/Self | jq '.Boot.BootSourceOverrideTarget, .Boot.BootSourceOverrideEnabled'
 	echo -e "\n-------------------------\n\n"
 elif [ $bs_s = 1 ]; then
 	echo -e "\n-------------------------\n\nBootSourceOverrideEnabled: $bs_e"
         echo -e "BootSourceOverrideTarget: $bs_t"
 	echo -e "BootSourceOverrideMode: $bs_m\n"
-	eval curl -k -u Administrator:superuser -H "content-type:application/json" -X PATCH -d '{\"Boot\":{\"BootSourceOverrideEnabled\":\"$bs_e\"\,\"BootSourceOverrideMode\":\"$bs_m\"\,\"BootSourceOverrideTarget\":\"$bs_t\"}}' http://$bmcip/redfish/v1/Systems/Self | jq
+	eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -X PATCH -d '{\"Boot\":{\"BootSourceOverrideEnabled\":\"$bs_e\"\,\"BootSourceOverrideMode\":\"$bs_m\"\,\"BootSourceOverrideTarget\":\"$bs_t\"}}' http://$bmcip/redfish/v1/Systems/Self | jq
 	echo -e "\n-------------------------\n\n"
 else
 	echo -e "\n-------------------------\n\nBootSourceOverrideEnabled: $bs_e"
 	echo -e "BootSourceOverrideTarget: $bs_t\n"
-	eval curl -k -u Administrator:superuser -H "content-type:application/json" -X PATCH -d '{\"Boot\":{\"BootSourceOverrideEnabled\":\"$bs_e\"\,\"BootSourceOverrideTarget\":\"$bs_t\"}}' http://$bmcip/redfish/v1/Systems/Self | jq
+	eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -X PATCH -d '{\"Boot\":{\"BootSourceOverrideEnabled\":\"$bs_e\"\,\"BootSourceOverrideTarget\":\"$bs_t\"}}' http://$bmcip/redfish/v1/Systems/Self | jq
 	echo -e "\n-------------------------\n\n"
 fi
 
@@ -63,7 +71,7 @@ num=$2
 info_name=$3
 
 echo -e "\n-------------------------\n\n[Show how many CPU/DIMM/LAN slots or BIOS info on your system]\n"
-curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Systems/Self/$info_ty | jq '.' >> 4-2_"$info_name"_and_"$info_name"_ID_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Systems/Self/$info_ty | jq '.' >> 4-2_"$info_name"_and_"$info_name"_ID_"$SUT_name".txt
 echo -e "\n-------------------------\n\n" >> 4-2_"$info_name"_and_"$info_name"_ID_"$SUT_name".txt
 echo -e "\n[Show each CPU/DIMM/LAN/BIOS information ,DIMM must match your DMI information ,#dmidecode -t 17, CPU/LAN/BIOS match your SPEC]"
 echo -e "[This script will save all the output into file '4-2_"$info_name"_and_"$info_name"_ID_"$SUT_name".txt' please check the file yourself]\n"
@@ -71,7 +79,7 @@ echo -e "\n-------------------------\n\n"
 
 for (( i=1; i<=$num; i=i+1 ));
 	do	
-		curl -k -u Administrator:superuser -H "content-type:application/json"  -X GET https://$bmcip/redfish/v1/Systems/Self/$info_ty/$i | jq '.' >> 4-2_"$info_ty"_and_"$info_ty"_ID_"$SUT_name".txt
+		curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Systems/Self/$info_ty/$i | jq '.' >> 4-2_"$info_ty"_and_"$info_ty"_ID_"$SUT_name".txt
 		echo -e "\n-------------------------\n\n" >> 4-2_"$info_ty"_and_"$info_ty"_ID_"$SUT_name".txt
 	done
 }
@@ -87,17 +95,17 @@ info_name=$2
 if [ $info_ty = 1 ]; then
 
 	echo -e "[This script will clear all LogServices/Logs please check log is empty]\n"
-	curl -k -u Administrator:superuser -H "content-type:application/json" -X POST -d '{"ClearType":"ClearAll"}' http://$bmcip/redfish/v1/Chassis/Self/LogServices/Logs/Actions/LogService.ClearLog
+	curl -k -u $red_user:$red_pw -H "content-type:application/json" -X POST -d '{"ClearType":"ClearAll"}' http://$bmcip/redfish/v1/Chassis/Self/LogServices/Logs/Actions/LogService.ClearLog
 	
 	sleep 10
 
-	curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Chassis/Self/LogServices/Logs/Entries | jq
+	curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Chassis/Self/LogServices/Logs/Entries | jq
 
 else
 
 	echo -e "\n4-3. Chassis"$info_ty"\n\n-------------------------\n"
 	echo -e "[This script will save all the output into file '4-3_Chassis_"$info_name"_"$SUT_name".txt' please check the file yourself]\n"
-	curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Chassis$info_ty | jq '.' >> 4-3_Chassis_"$info_name"_"$SUT_name".txt
+	curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Chassis$info_ty | jq '.' >> 4-3_Chassis_"$info_name"_"$SUT_name".txt
 	echo -e "\n-------------------------\n"
 
 fi
@@ -113,7 +121,7 @@ info_ty=$1
 
 echo -e "\n4-4. Managers"$info_ty"\n\n-------------------------\n" >> 4-4_Managers_all_info_"$SUT_name".txt
 echo -e "[This script will save all the output into file '4-4_Managers_all_info_"$SUT_name".txt' please check the file yourself]\n"
-curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Managers$info_ty | jq '.' >> 4-4_Managers_all_info_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Managers$info_ty | jq '.' >> 4-4_Managers_all_info_"$SUT_name".txt
 echo -e "\n-------------------------\n" >> 4-4_Managers_all_info_"$SUT_name".txt
 
 }
@@ -129,11 +137,11 @@ int_pa=$3
 int_name=$4
 
 echo -e "[This script will do "$int_name" please check the reaction...]\n"
-eval curl -k -u Administrator:superuser -H "content-type:application/json" -X POST -d '{\"$int_ty\":\"$int_ac\"}' http://$bmcip/redfish/v1/Managers/Self$int_pa
+eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -X POST -d '{\"$int_ty\":\"$int_ac\"}' http://$bmcip/redfish/v1/Managers/Self$int_pa
 
 if [ $int_name = BMC_SEL_log_clear ]; then
 
-curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Managers/Self/LogServices/SEL/Entries | jq
+curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Managers/Self/LogServices/SEL/Entries | jq
 
 fi
 
@@ -151,27 +159,27 @@ info_name=$3
 echo -e "[This script will save all the output into file '4-"$nu"_"$info_name"_all_info_"$SUT_name".txt' please check the file yourself]\n"
 echo -e "\n4-"$nu". "$info_ty"\n\n-------------------------\n" >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
 
-curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/"$info_ty" | jq '.' >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/"$info_ty" | jq '.' >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
 
 echo -e "\n-------------------------\n" >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
 
 if [ $info_ty = TelemetryService/MetricDefinitions ] || [ $info_ty = JsonSchemas ]; then
 
-num=$(curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/$info_ty | jq '.Members | length')
+num=$(curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/$info_ty | jq '.Members | length')
 
 for (( i=0; i<${num}; i=i+1 ));
 	do
 	
-	element=$(curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/$info_ty | eval jq -r '.Members[$i].\"@odata.id\"')
+	element=$(curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/$info_ty | eval jq -r '.Members[$i].\"@odata.id\"')
 
 	echo -e "\n4-"$nu". "$element"\n\n-------------------------\n" >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
-	curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip$element | jq '.' >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
+	curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip$element | jq '.' >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
 	echo -e "\n-------------------------\n" >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
 
 	if [ $info_ty = JsonSchemas ]; then
 
 	echo -e "\n4-"$nu". "$element".json\n\n-------------------------\n" >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
-        curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip$element.json | jq '.' >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
+        curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip$element.json | jq '.' >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
         echo -e "\n-------------------------\n" >> 4-"$nu"_"$info_name"_all_info_"$SUT_name".txt
 
 	fi
@@ -192,16 +200,16 @@ info_name=$2
 if [ $info_ty = ErrorLog ] || [ $info_ty = AuditLog ]; then
 
 echo -e "[This script will clear all "$info_ty" please check log is empty]\n"
-curl -k -u Administrator:superuser -H "content-type:application/json" -H "accept:application/json" -d '{"ClearType":"ClearAll"}' -X POST https://$bmcip/redfish/v1/DynamicExtension/LogServices/$info_ty/Actions/LogService.ClearLog
+curl -k -u $red_user:$red_pw -H "content-type:application/json" -H "accept:application/json" -d '{"ClearType":"ClearAll"}' -X POST https://$bmcip/redfish/v1/DynamicExtension/LogServices/$info_ty/Actions/LogService.ClearLog
 
 sleep 10
 
-curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/DynamicExtension/LogServices$info_name | jq
+curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/DynamicExtension/LogServices$info_name | jq
 
 else
 
 echo -e "[This script will save all the output into file '4-12_"$info_name"_all_info_"$SUT_name".txt' please check the file yourself]\n"
-curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/DynamicExtension/LogServices$info_ty | jq '.' >> 4-12_"$info_name"_all_info_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/DynamicExtension/LogServices$info_ty | jq '.' >> 4-12_"$info_name"_all_info_"$SUT_name".txt
 
 fi
 
@@ -217,19 +225,19 @@ echo -e "[This script will save all the output into file '4-6_Session_all_test_"
 
 echo -e "1. Create a new session.\n" >> 4-6_Session_all_test_"$SUT_name".txt
 
-curl -k -u Administrator:superuser -H "content-type:application/json" -d '{"UserName":"Administrator","Password":"superuser"}' -X POST https://$bmcip:/redfish/v1/SessionService/Sessions | jq '.' >> 4-6_Session_all_test_"$SUT_name".txt
+eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -d '{\"UserName\":\"$red_user\"\,\"Password\":\"$red_pw\"}' -X POST https://$bmcip:/redfish/v1/SessionService/Sessions | jq '.' >> 4-6_Session_all_test_"$SUT_name".txt
 
 echo -e "\n-------------------------\n" >> 4-6_Session_all_test_"$SUT_name".txt
 echo -e "2. List session you created.\n" >> 4-6_Session_all_test_"$SUT_name".txt
-curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip:/redfish/v1/SessionService/Sessions | jq '.' >> 4-6_Session_all_test_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip:/redfish/v1/SessionService/Sessions | jq '.' >> 4-6_Session_all_test_"$SUT_name".txt
 
 echo -e "\n-------------------------\n" >> 4-6_Session_all_test_"$SUT_name".txt
 echo -e "3. Delete the session\n" >> 4-6_Session_all_test_"$SUT_name".txt
 
-element=$(curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip:/redfish/v1/SessionService/Sessions | jq -r '.Members[]."@odata.id"')
+element=$(curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip:/redfish/v1/SessionService/Sessions | jq -r '.Members[]."@odata.id"')
 
-curl -k -u Administrator:superuser -H "content-type:application/json" -X DELETE https://$bmcip$element | jq 
-curl -k -u Administrator:superuser -H "content-type:application/json" -X GET https://$bmcip:/redfish/v1/SessionService/Sessions | jq '.' >> 4-6_Session_all_test_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H "content-type:application/json" -X DELETE https://$bmcip$element | jq 
+curl -k -u $red_user:$red_pw -H "content-type:application/json" -X GET https://$bmcip:/redfish/v1/SessionService/Sessions | jq '.' >> 4-6_Session_all_test_"$SUT_name".txt
 
 echo -e "\n-------------------------\n" 
 
@@ -249,29 +257,29 @@ if [ $int_ty = add ]; then
 
 echo -e "1. Add subscription.\n" >> 4-7_Event_test_"$SUT_name".txt
 
-curl -k -u Administrator:superuser -H content-type:application/json -d '{"Destination":"http://10.2.0.1","EventTypes":["StatusChange"],"Context":"Gigabyte","Protocol":"Redfish"}' -X POST https://$bmcip/redfish/v1/EventService/Subscriptions | jq '.' >> 4-7_Event_test_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H content-type:application/json -d '{"Destination":"http://10.2.0.1","EventTypes":["StatusChange"],"Context":"Gigabyte","Protocol":"Redfish"}' -X POST https://$bmcip/redfish/v1/EventService/Subscriptions | jq '.' >> 4-7_Event_test_"$SUT_name".txt
 
 echo -e "\n-------------------------\n" >> 4-7_Event_test_"$SUT_name".txt
 echo -e "2. Check subscription.\n" >> 4-7_Event_test_"$SUT_name".txt
 
-curl -k -u Administrator:superuser -H content-type:application/json -X GET https://$bmcip/redfish/v1/EventService/Subscriptions | jq '.' >> 4-7_Event_test_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H content-type:application/json -X GET https://$bmcip/redfish/v1/EventService/Subscriptions | jq '.' >> 4-7_Event_test_"$SUT_name".txt
 
-element=$(curl -k -u Administrator:superuser -H content-type:application/json -X GET https://$bmcip/redfish/v1/EventService/Subscriptions | jq -r '.Members[]."@odata.id"')
+element=$(curl -k -u $red_user:$red_pw -H content-type:application/json -X GET https://$bmcip/redfish/v1/EventService/Subscriptions | jq -r '.Members[]."@odata.id"')
 
 echo -e "\n-------------------------\n" >> 4-7_Event_test_"$SUT_name".txt
 echo -e "3. Check subscription content.\n" >> 4-7_Event_test_"$SUT_name".txt
 
-curl -k -u Administrator:superuser -H content-type:application/json -X GET https://$bmcip$element | jq '.' >> 4-7_Event_test_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H content-type:application/json -X GET https://$bmcip$element | jq '.' >> 4-7_Event_test_"$SUT_name".txt
 
 else
 
 echo -e "\n-------------------------\n" >> 4-7_Event_test_"$SUT_name".txt
 echo -e "4. Delete a subscription, Check Subscription didn't list from subscription list.\n" >> 4-7_Event_test_"$SUT_name".txt
 
-element=$(curl -k -u Administrator:superuser -H content-type:application/json -X GET https://$bmcip/redfish/v1/EventService/Subscriptions | jq -r '.Members[]."@odata.id"')
+element=$(curl -k -u $red_user:$red_pw -H content-type:application/json -X GET https://$bmcip/redfish/v1/EventService/Subscriptions | jq -r '.Members[]."@odata.id"')
 
-curl -k -u Administrator:superuser -H content-type:application/json -X DELETE https://$bmcip$element | jq
-curl -k -u Administrator:superuser -H content-type:application/json -X GET https://$bmcip/redfish/v1/EventService/Subscriptions | jq '.' >> 4-7_Event_test_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H content-type:application/json -X DELETE https://$bmcip$element | jq
+curl -k -u $red_user:$red_pw -H content-type:application/json -X GET https://$bmcip/redfish/v1/EventService/Subscriptions | jq '.' >> 4-7_Event_test_"$SUT_name".txt
 
 fi
 
@@ -296,7 +304,7 @@ case ${int_ty} in
 		curl -k -u $int_uerpass -H content-type:application/json -X GET https://$bmcip/redfish/v1/AccountService$int_con | jq '.' >> 4-5_Accounts_test_"$SUT_name".txt
 		;;
 	"create")
-		curl -k -u Administrator:superuser -H "contenT-type:application/json" -d '{"UserName":"user02","Password":"superuser02","RoleId":"Administrator","Enabled":true,"Locked":false,"Name":"test02","Description":"redfish_test"}' -X POST https://$bmcip/redfish/v1/AccountService/Accounts | jq '.' >> 4-5_Accounts_test_"$SUT_name".txt
+		curl -k -u $red_user:$red_pw -H "contenT-type:application/json" -d '{"UserName":"user02","Password":"superuser02","RoleId":"Administrator","Enabled":true,"Locked":false,"Name":"test02","Description":"redfish_test"}' -X POST https://$bmcip/redfish/v1/AccountService/Accounts | jq '.' >> 4-5_Accounts_test_"$SUT_name".txt
 		;;
 	"status")
 		eval curl -k -u $int_uerpass -H "content-type:application/json" -d '{\"Enabled\":$int_sta}' -X PATCH https://$bmcip/redfish/v1/AccountService$int_con | jq
@@ -319,7 +327,7 @@ int_prt=$2
 int_ip=$3
 int_fname=$4
 
-eval curl -v -k -u Administrator:superuser -H "content-type:application/json" -d '{\"ImageURI\":\"http://$int_ip:80/$int_fname\"\,\"UpdateComponent\":\"$int_ty\"\,\"TransferProtocol\":\"$int_prt\"}' -X POST https://$bmcip/redfish/v1/UpdateService/Actions/SimpleUpdate | jq
+eval curl -v -k -u $red_user:$red_pw -H "content-type:application/json" -d '{\"ImageURI\":\"http://$int_ip:80/$int_fname\"\,\"UpdateComponent\":\"$int_ty\"\,\"TransferProtocol\":\"$int_prt\"}' -X POST https://$bmcip/redfish/v1/UpdateService/Actions/SimpleUpdate | jq
 
 }
 
@@ -331,7 +339,7 @@ Token()
 
 echo -e "\n1. Create Session first and Check Token in reply header "X-Auth-Token :xxxxxxxxxxx"\n"
 echo -e "\n-------------------------\n"
-curl -v --silent -k -u Administrator:superuser -H "content-type:application/json" -d '{"UserName":"Administrator","Password":"superuser"}' -X POST https://$bmcip/redfish/v1/SessionService/Sessions 2>&1 | grep X-Auth-Token | sed -n 1p | cut -f 3 -d " " > t1e1st.log
+eval curl -v --silent -k -u $red_user:$red_pw -H "content-type:application/json" -d '{\"UserName\":\"$red_user\"\,\"Password\":\"$red_pw\"}' -X POST https://$bmcip/redfish/v1/SessionService/Sessions 2>&1 | grep X-Auth-Token | sed -n 1p | cut -f 3 -d " " > t1e1st.log
 
 dos2unix -q t1e1st.log
 
@@ -358,7 +366,7 @@ case ${test_type} in
 		;;
 	"sys_info")
 		echo -e "\n4-2. Check system info\n\n-------------------------\n"
-		curl -u Administrator:superuser -k -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Systems/Self | jq '.' > 4-2_Check_system_info_$SUT_name.txt
+		curl -u $red_user:$red_pw -k -H "content-type:application/json" -X GET https://$bmcip/redfish/v1/Systems/Self | jq '.' > 4-2_Check_system_info_$SUT_name.txt
 		echo -e "\n-------------------------\n"
 		;;
 	"p_s")
@@ -495,7 +503,7 @@ case ${test_type} in
                 ;;
         "ca_cfg")
                 echo -e "\n4-13. Configurations\n\n-------------------------\n"
-                curl -k -u Administrator:superuser -H "content-type:application/json"  -X GET https://$bmcip/redfish/v1/configurations | jq '.' > 4-13_Get_CA_configurations_$SUT_name.txt
+                curl -k -u $red_user:$red_pw -H "content-type:application/json"  -X GET https://$bmcip/redfish/v1/configurations | jq '.' > 4-13_Get_CA_configurations_$SUT_name.txt
                 echo -e "\n-------------------------\n"
                 ;;
         "cd_se")
@@ -509,10 +517,10 @@ case ${test_type} in
                 ;;
         "acc_info")
 		echo -e "1-1. List Account.\n" >> 4-5_Accounts_test_"$SUT_name".txt
-        	Accounts list /Accounts Administrator:superuser
+        	Accounts list /Accounts $red_user:$red_pw
 		echo -e "\n-------------------------\n" >> 4-5_Accounts_test_"$SUT_name".txt
 		echo -e "1-2. List Default Account's content.\n" >> 4-5_Accounts_test_"$SUT_name".txt
-		Accounts list /Accounts/1 Administrator:superuser
+		Accounts list /Accounts/1 $red_user:$red_pw
 		echo -e "\n-------------------------\n" >> 4-5_Accounts_test_"$SUT_name".txt
                 ;;
         "add_acc")
@@ -527,7 +535,7 @@ case ${test_type} in
                 ;;
         "set_acc")
                 echo -e "3-1. Change user enabled status to false.\n" >> 4-5_Accounts_test_"$SUT_name".txt
-		Accounts status /Accounts/2 Administrator:superuser false
+		Accounts status /Accounts/2 $red_user:$red_pw false
 		echo -e "\n-------------------------\n" >> 4-5_Accounts_test_"$SUT_name".txt
 		echo -e "3-2. Access account list again(use user02 to login).\n" >> 4-5_Accounts_test_"$SUT_name".txt
 		Accounts list /Accounts user02:superuser02
@@ -535,10 +543,10 @@ case ${test_type} in
                 ;;
         "del_acc")
                 echo -e "4-1. Delete user02.\n" >> 4-5_Accounts_test_"$SUT_name".txt
-		Accounts delete /Accounts/2 Administrator:superuser
+		Accounts delete /Accounts/2 $red_user:$red_pw
 		echo -e "\n-------------------------\n" >> 4-5_Accounts_test_"$SUT_name".txt
 		echo -e "4-2. List user again(check account delete).\n" >> 4-5_Accounts_test_"$SUT_name".txt
-		Accounts list /Accounts Administrator:superuser
+		Accounts list /Accounts $red_user:$red_pw
 		echo -e "\n-------------------------\n" >> 4-5_Accounts_test_"$SUT_name".txt
                 ;;
 	"up_bios")
