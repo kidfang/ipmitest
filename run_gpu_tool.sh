@@ -35,6 +35,7 @@ lshw -c memory -short | tee  $result_output/mem_info.log
 dmidecode -t memory | tee $result_output/mem.log
 dmidecode -t bios | tee $result_output/bios.log
 lspci | grep -i NVIDIA | tee $result_output/nvidia_gpu_pcie.log
+lspci -tv | tee $result_output/lspci_tv.log
 lscpu | tee $result_output/lscpu.log
 
 }
