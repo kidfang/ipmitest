@@ -3,7 +3,7 @@ Description=Power Cycle test
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/Power_cycle.sh
+ExecStart=/usr/bin/reboot.sh
 RemainAfterExit=yes
 
 [Install]
