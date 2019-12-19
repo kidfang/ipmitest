@@ -3,8 +3,11 @@
 
 modprobe ipmi_si
 modprobe ipmi_devintf
+modprobe nvidia_modeset
+modprobe nvidia_drm
+modprobe nvidia
 
-sleep 1
+sleep 5
 
 s=$( ipmitool sel list | grep -i interrupt )
 t=$( ipmitool sel list | wc -l )
