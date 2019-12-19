@@ -14,6 +14,7 @@ w=$( lspci | grep -i NVIDIA | wc -l )    # AMD GPU card need change to vega
 x=$( lsscsi | wc -l )                    # Need check yourself
 y=$( cat /root/count.txt )
 z=$( ls /root | grep count.txt | wc -l )
+j=$( nvidia-smi -a | grep -i vbios | wc -l )
 
 # Detect the reboot count number
 
@@ -42,7 +43,7 @@ fi
 # command to Power Cycle is -> ipmitool chassis power cycle
 
 if [ $x -eq 1 ];then    # Need check yourself
-	if [ $w -eq 8 ];then  # Need check yourself
+	if [ $w -eq 8 ] && [ $j -eq 8 ];then  # Need check yourself
 		if [ $v -eq 0 ] && [ $u -eq 0 ];then
 			date >> /root/rebootrec.txt
 			echo PASS >> /root/rebootrec.txt
