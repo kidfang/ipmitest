@@ -3,9 +3,9 @@
 
 modprobe ipmi_si
 modprobe ipmi_devintf
-modprobe nvidia_modeset
-modprobe nvidia_drm
-modprobe nvidia
+modprobe nvidia_modeset    # NVIDIA GPU only
+modprobe nvidia_drm        # NVIDIA GPU only
+modprobe nvidia            # NVIDIA GPU only
 
 sleep 5
 
@@ -17,7 +17,8 @@ w=$( lspci | grep -i NVIDIA | wc -l )    # AMD GPU card need change to vega
 x=$( lsscsi | wc -l )                    # Need check yourself
 y=$( cat /root/count.txt )
 z=$( ls /root | grep count.txt | wc -l )
-j=$( nvidia-smi -a | grep -i vbios | wc -l )
+j=$( nvidia-smi -a | grep -i vbios | wc -l )  # for NVIDIA GPU
+#j=$( /opt/rocm/bin/rocm-smi -i | grep -i GPU | wc -l )  # for AMD GPU
 
 # Detect the reboot count number
 
