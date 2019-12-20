@@ -4,11 +4,12 @@ CUDA_path=$2            # /root/NVIDIA_CUDA-10.1_Samples
 rvs_path=$result_output/ROCmValidationSuite
 rocm_path=/opt/rocm/bin
 
-echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/nv_basic/amd_basic/p2p/bw): "
+echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/rocm_install/nv_basic/amd_basic/p2p/bw): "
 read test_type
 
 # nv_set_tool  => Install NVidia GPU test tool only for RHEL based OS
 # rvs_set_tool => Install rvs only for ubuntu
+# rocm_install => Install rocm only for ubuntu
 
 NV_Install_tool()
 
@@ -51,6 +52,28 @@ cd ./build
 make package
 
 sudo dpkg -i rocm-validation-suite*.deb
+
+}
+
+ROCm_install()
+
+{
+
+sudo apt update
+sudo apt dist-upgrade
+sudo apt install libnuma-dev
+
+read -n 1 -p "Please type ctrl + alt + delete to reboot system, if you already reboot before please press Enter to continue the installer ..."
+
+# wget -qO - http://repo.radeon.com/rocm/apt/debian/rocm.gpg.key | sudo apt-key add -
+# echo 'deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main' | sudo tee /etc/apt/sources.list.d/rocm.list
+
+wget -qO - http://repo.radeon.com/rocm/apt/debian/rocm.gpg.key | sudo apt-key add -
+sudo sh -c 'echo deb [arch=amd64] http://repo.radeon.com/rocm/apt/debian/ xenial main > /etc/apt/sources.list.d/rocm.list'
+sudo apt-get update
+sudo apt-get install rocm-dkms rocm-opencl rocm-opencl-dev opencl-headers build-essential cxlactivitylogger libunwind-dev rocblas rocm_bandwidth_test cmake libpci3 libpci-dev doxygen git -y
+
+read -n 1 -p "Please type ctrl + alt + delete to reboot system"
 
 }
 
@@ -123,6 +146,10 @@ case ${test_type} in
 	"rvs_set_tool")
 		echo "Start to set and install AMD RVS test tool ... "
 		RVS_install 1
+		;;
+	"rocm_install")
+		echo "Start to set and install AMD ROCm ... "
+		ROCm_install 1
 		;;
 	"p2p")
 		echo "Start to test p2p ... "
