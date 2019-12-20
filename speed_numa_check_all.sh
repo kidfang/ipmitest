@@ -6,14 +6,14 @@ check()
 
 m=$1
 
-num=$(lspci | grep -i "$m" | wc -l)
+num=$(lspci | grep -F "$m" | wc -l)
 
 for (( i=1; i<=$num; i=i+1 ));
 	do 
-		addr=$(lspci | grep -i "$m" | sed -n "$i"p | cut -f 1 -d " ")
-		speed_r=$(lspci -vv -s $addr | grep -i lnksta | sed -n 1p | cut -f 1 -d ",")
-		speed_w=$(lspci -vv -s $addr | grep -i lnksta | sed -n 1p | cut -f 2 -d ",")
-		full=$(lspci | grep -i "$m" | sed -n "$i"p)
+		addr=$(lspci | grep -F "$m" | sed -n "$i"p | cut -f 1 -d " ")
+		speed_r=$(lspci -vv -s $addr | grep -F LnkSta | sed -n 1p | cut -f 1 -d ",")
+		speed_w=$(lspci -vv -s $addr | grep -F LnkSta | sed -n 1p | cut -f 2 -d ",")
+		full=$(lspci | grep -F "$m" | sed -n "$i"p)
 		echo "$full , $speed_r , $speed_w"
 	done
 
@@ -22,9 +22,9 @@ echo -e "\n---------------------------------------------------------------------
 
 for (( i=1; i<=$num; i=i+1 ));
         do
-                addr=$(lspci | grep -i "$m" | sed -n "$i"p | cut -f 1 -d " ")
-                speed_n=$(lspci -vv -s $addr | grep -i numa)
-                full=$(lspci | grep -i "$m" | sed -n "$i"p)
+                addr=$(lspci | grep -F "$m" | sed -n "$i"p | cut -f 1 -d " ")
+                speed_n=$(lspci -vv -s $addr | grep -F NUMA)
+                full=$(lspci | grep -F "$m" | sed -n "$i"p)
                 echo "$full , $speed_n"
         done
 
@@ -40,7 +40,7 @@ case ${test_type} in
 		;;
 	"2")
 		echo -e "\n[AMD GPU]\n\n"
-                check vega
+                check [AMD/ATI]
 		;;
 	"3")
                 echo -e "\n[Cambricon GPU]\n\n"
