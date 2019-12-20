@@ -4,7 +4,7 @@ CUDA_path=$2            # /root/NVIDIA_CUDA-10.1_Samples
 rvs_path=$result_output/ROCmValidationSuite
 rocm_path=/opt/rocm/bin
 
-echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/rocm_install/nv_basic/amd_basic/p2p/bw): "
+echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/rocm_install/nv_basic/amd_basic/nv_p2p/nv_bw): "
 read test_type
 
 # nv_set_tool  => Install NVidia GPU test tool only for RHEL based OS
@@ -103,18 +103,24 @@ amd_basic_info()
 
 mkdir $result_output/Basic_info
 
+$rocm_path/rocm-smi | tee $result_output/Basic_info/rocm_smi.txt
+$rocm_path/rocm-smi -a | tee $result_output/Basic_info/rocm_smi_a.txt
+$rocm_path/rocm-smi -v | tee $result_output/Basic_info/rocm_smi_v.txt
+$rocm_path/rocminfo | tee $result_output/Basic_info/rocminfo.txt
+/opt/rocm/opencl/bin/x86_64/clinfo | tee $result_output/Basic_info/clinfo.txt
 
-
-lshw -c memory -short | tee  $result_output/Basic_info/mem_info.log
+lshw -c memory -short | tee $result_output/Basic_info/mem_info.log
 dmidecode -t memory | tee $result_output/Basic_info/mem.log
 dmidecode -t bios | tee $result_output/Basic_info/bios.log
-lspci | grep -i NVIDIA | tee $result_output/Basic_info/nvidia_gpu_pcie.log
+lspci | grep -F [AMD/ATI] | tee $result_output/Basic_info/amd_gpu_pcie.log
 lspci -tv | tee $result_output/Basic_info/lspci_tv.log
 lscpu | tee $result_output/Basic_info/lscpu.log
+dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" | tee $result_output/Basic_info/dmesg.txt
+dmesg | tee $result_output/Basic_info/dmesg_all.txt
 
 }
 
-p2p_test()
+nv_p2p_test()
 
 {
 
@@ -122,7 +128,7 @@ $CUDA_path/1_Utilities/p2pBandwidthLatencyTest/p2pBandwidthLatencyTest | tee $re
 
 }
 
-bw_test()
+nv_bw_test()
 
 {
 
@@ -151,13 +157,13 @@ case ${test_type} in
 		echo "Start to set and install AMD ROCm ... "
 		ROCm_install 1
 		;;
-	"p2p")
+	"nv_p2p")
 		echo "Start to test p2p ... "
-		p2p_test 1
+		nv_p2p_test 1
 		;;
-	"bw")
+	"nv_bw")
 		echo "Start to test bw ... "
-		bw_test 1
+		nv_bw_test 1
 		;;
 	"nv_basic")
 		echo "Start to save the basic information ... "
