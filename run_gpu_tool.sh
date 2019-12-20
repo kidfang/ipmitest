@@ -2,7 +2,7 @@
 result_output=$1        # /home/smbuser
 CUDA_path=$2            # /root/NVIDIA_CUDA-10.1_Samples
 
-echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/basic/p2p/bw): "
+echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/nv_basic/amd_basic/p2p/bw): "
 read test_type
 
 # nv_set_tool  => Install NVidia GPU test tool only for RHEL based OS
@@ -52,15 +52,34 @@ sudo dpkg -i rocm-validation-suite*.deb
 
 }
 
-basic_info()
+nv_basic_info()
 
 {
 
 mkdir $result_output/Basic_info
+
 nvidia-smi | tee $result_output/Basic_info/nvidia_smi.log
 nvidia-smi -a | tee $result_output/Basic_info/nvidia_smi_a.log
 nvidia-smi -q | tee $result_output/Basic_info/nvidia_smi_q.log
 nvidia-smi -q | grep -i vbios | tee $result_output/Basic_info/nvidia_smi_vbios.log
+
+lshw -c memory -short | tee  $result_output/Basic_info/mem_info.log
+dmidecode -t memory | tee $result_output/Basic_info/mem.log
+dmidecode -t bios | tee $result_output/Basic_info/bios.log
+lspci | grep -i NVIDIA | tee $result_output/Basic_info/nvidia_gpu_pcie.log
+lspci -tv | tee $result_output/Basic_info/lspci_tv.log
+lscpu | tee $result_output/Basic_info/lscpu.log
+
+}
+
+amd_basic_info()
+
+{
+
+mkdir $result_output/Basic_info
+
+
+
 lshw -c memory -short | tee  $result_output/Basic_info/mem_info.log
 dmidecode -t memory | tee $result_output/Basic_info/mem.log
 dmidecode -t bios | tee $result_output/Basic_info/bios.log
@@ -111,9 +130,9 @@ case ${test_type} in
 		echo "Start to test bw ... "
 		bw_test 1
 		;;
-	"basic")
+	"nv_basic")
 		echo "Start to save the basic information ... "
-		basic_info 1
+		nv_basic_info 1
 		;;
 	*)
 		echo "End~~~~"
