@@ -1,6 +1,8 @@
 
 result_output=$1        # /home/smbuser
 CUDA_path=$2            # /root/NVIDIA_CUDA-10.1_Samples
+rvs_path=$result_output/ROCmValidationSuite
+rocm_path=/opt/rocm/bin
 
 echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/nv_basic/amd_basic/p2p/bw): "
 read test_type
@@ -133,6 +135,10 @@ case ${test_type} in
 	"nv_basic")
 		echo "Start to save the basic information ... "
 		nv_basic_info 1
+		;;
+	"amd_basic")
+		echo "Start to save the basic information ... "
+		amd_basic_info 1
 		;;
 	*)
 		echo "End~~~~"
