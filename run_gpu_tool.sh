@@ -4,7 +4,7 @@ CUDA_path=$2            # /root/NVIDIA_CUDA-10.1_Samples
 rvs_path=$result_output/ROCmValidationSuite
 rocm_path=/opt/rocm/bin
 
-echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/rocm_install/nv_basic/amd_basic/nv_p2p/nv_bw/rvs_p2p): "
+echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/rocm_install/nv_basic/amd_basic/nv_p2p/nv_bw/rvs_p2p/rvs_smqt): "
 read test_type
 
 # nv_set_tool  => Install NVidia GPU test tool only for RHEL based OS
@@ -151,6 +151,29 @@ $rocm_path/rocm_bandwidth_test | tee $result_output/amd_p2p.log
 
 }
 
+rvs_smqt()
+
+{
+
+$rvs_path/build/bin/rvs -d 5 -c $rvs_path/build/bin/conf/smqt_3.conf | tee $result_output/smqt3.txt
+
+}
+
+rvs_iet()
+
+{
+
+$rvs_path/build/bin/rvs -d 5 -c $rvs_path/build/bin/conf/iet_6.conf | tee $result_output/iet6.txt
+
+}
+
+rvs_gst()
+
+{
+
+$rvs_path/build/bin/rvs -d 5 -c $rvs_path/build/bin/conf/qst_7.conf 
+
+}
 case ${test_type} in
 
 	"nv_set_tool")
@@ -184,6 +207,18 @@ case ${test_type} in
 	"rvs_p2p")
 		echo "Start to test AMD GPU p2p ... "
 		rvs_p2p_test 1
+		;;
+	"rvs_smqt")
+		echo "Start to test AMD GPU SMBIOS Mapping Test ... "
+		rvs_smqt 1
+		;;
+	"rvs_iet")
+		echo "Start to test AMD GPU InputEDPp Test 2hrs ... "
+		rvs_iet 1
+		;;
+	"rvs_gst")
+		echo "Start to test AMD GPU Stress Test 12hrs ... "
+		rvs_gst 1
 		;;
 	*)
 		echo "End~~~~"
