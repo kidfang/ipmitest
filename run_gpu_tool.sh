@@ -4,7 +4,7 @@ CUDA_path=$2            # /root/NVIDIA_CUDA-10.1_Samples
 rvs_path=$result_output/ROCmValidationSuite
 rocm_path=/opt/rocm/bin
 
-echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/rocm_install/nv_basic/amd_basic/nv_p2p/nv_bw): "
+echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/rocm_install/nv_basic/amd_basic/nv_p2p/nv_bw/rvs_p2p): "
 read test_type
 
 # nv_set_tool  => Install NVidia GPU test tool only for RHEL based OS
@@ -166,11 +166,11 @@ case ${test_type} in
 		ROCm_install 1
 		;;
 	"nv_p2p")
-		echo "Start to test p2p ... "
+		echo "Start to test nvidia p2p ... "
 		nv_p2p_test 1
 		;;
 	"nv_bw")
-		echo "Start to test bw ... "
+		echo "Start to test nvidia bw ... "
 		nv_bw_test 1
 		;;
 	"nv_basic")
@@ -180,6 +180,10 @@ case ${test_type} in
 	"amd_basic")
 		echo "Start to save the basic information ... "
 		amd_basic_info 1
+		;;
+	"rvs_p2p")
+		echo "Start to test AMD GPU p2p ... "
+		rvs_p2p_test 1
 		;;
 	*)
 		echo "End~~~~"
