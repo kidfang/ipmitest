@@ -143,6 +143,16 @@ $CUDA_path/1_Utilities/bandwidthTest/bandwidthTest --device=all | tee $result_ou
 
 }
 
+nv_p2p_test()
+
+{
+
+rocm_path=/opt/rocm/bin
+
+$rocm_path/rocm_bandwidth_test | tee $result_output/amd_p2p.log
+
+}
+
 case ${test_type} in
 
 	"nv_set_tool")
