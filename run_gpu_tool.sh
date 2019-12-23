@@ -4,7 +4,7 @@ CUDA_path=$2            # /root/NVIDIA_CUDA-10.1_Samples
 rvs_path=$result_output/ROCmValidationSuite
 rocm_path=/opt/rocm/bin
 
-echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/rocm_install/nv_basic/amd_basic/nv_p2p/nv_bw/rvs_p2p/rvs_smqt): "
+echo -e "\nPlease input the test type (nv_set_tool/rvs_set_tool/rocm_install/nv_basic/amd_basic/nv_p2p/nv_bw/rvs_p2p/rvs_smqt/rvs_iet/rvs_gst): "
 read test_type
 
 # nv_set_tool  => Install NVidia GPU test tool only for RHEL based OS
