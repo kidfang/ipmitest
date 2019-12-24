@@ -36,7 +36,7 @@ case ${test_type} in
 
 	"1")
 		echo -e "\n[Nvidia GPU]\n\n"
-		check nvidia
+		check NVIDIA
 		;;
 	"2")
 		echo -e "\n[AMD GPU]\n\n"
