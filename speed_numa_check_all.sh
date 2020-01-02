@@ -54,8 +54,11 @@ case ${test_type} in
                 echo -e "\n[Lan card]\n\n"
                 check eth
                 ;;
-
+        "6")
+                echo -e "\n[FPGA Stratix card]\n\n"
+                check 0b2b
+                ;;
 	*)
-		echo -e "\nInput what device you want to check\n\nNvidia_GPU=1,\n\nAMD_GPU=2,\n\nCambricon_GPU=3,\n\nNVMe_Device=4,\n\nLan_card=5\n"
+		echo -e "\nInput what device you want to check\n\nNvidia_GPU=1,\n\nAMD_GPU=2,\n\nCambricon_GPU=3,\n\nNVMe_Device=4,\n\nLan_card=5,\n\nFPGA_Stratix_card=6\n"
 		;;
 esac
