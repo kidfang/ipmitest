@@ -63,6 +63,6 @@ case ${test_type} in
                 check 09c4
                 ;;
 	*)
-		echo -e "\nInput what device you want to check\n\nNvidia_GPU=1,\n\nAMD_GPU=2,\n\nCambricon_GPU=3,\n\nNVMe_Device=4,\n\nLan_card=5,\n\nIntel_FPGA_Stratix_card=6\n,\n\nIntel_FPGA_Arria_card=7\n"
+		echo -e "\nInput what device you want to check\n\nNvidia_GPU=1,\n\nAMD_GPU=2,\n\nCambricon_GPU=3,\n\nNVMe_Device=4,\n\nLan_card=5,\n\nIntel_FPGA_Stratix_card=6,\n\nIntel_FPGA_Arria_card=7\n"
 		;;
 esac
