@@ -52,7 +52,7 @@ case ${test_type} in
                 ;;
         "5")
                 echo -e "\n[Lan card]\n\n"
-                check eth
+                check Eth
                 ;;
         "6")
                 echo -e "\n[Intel FPGA Stratix card]\n\n"
