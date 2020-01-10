@@ -53,9 +53,11 @@ chown -R smbuser /home/smbuser/
 chmod -R 0770 /home/smbuser/
 chcon -t samba_share_t /home/smbuser/
 
+systemctl enable smb.service
+systemctl enable nmb.service
+
 systemctl restart smb.service
 systemctl restart nmb.service
 
 systemctl stop firewalld.service
 systemctl disable firewalld.service
-
