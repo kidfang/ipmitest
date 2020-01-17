@@ -1,3 +1,5 @@
+mkdir /home/test/Stress_result_gpuburn >/dev/null 2>&1
+mkdir /home/test/Stress_result_stress-ng >/dev/null 2>&1
 
 for (( i=1; i<=10; i=i+1 ));
  	do
