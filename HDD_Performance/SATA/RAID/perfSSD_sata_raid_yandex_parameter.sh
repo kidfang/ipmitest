@@ -6,7 +6,8 @@
 #for i in {2..4};
 for (( i=3; i<=4; i=i+1 ));
 	do
-
+	
+	unset x
 	ac_hdd=$(mdadm --detail /dev/md12"$i" | grep -i  "Active Devices" | awk '{print $4}')
 	rd_lev=$(mdadm --detail /dev/md12"$i" | grep -i  "Raid Level" | awk '{print $4}')	
 
