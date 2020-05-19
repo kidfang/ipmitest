@@ -1,0 +1,4 @@
+安装linux系统遇到安装完成之后，无法启动系统出现Kernel panic-not syncing fatal exception。
+很多情况是由于板载声卡、网卡、或是cpu 超线程功能（Hyper-Threading ）引起的。
+这类问题的解决办法就是先查看错误代码中的信息，找到错误所指向的硬件，将其禁用。
+系统启动后，安装好相应的驱动，再启用该硬件即可。
