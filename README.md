@@ -1,6 +1,9 @@
 # ipmitest
 git clone https://github.com/kidfang/ipmitest.git
 
+# Root login under ubuntu
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
+
 # Samba_server_under_centos
 if connect to smba folder failed please restart samba service and retry
 
