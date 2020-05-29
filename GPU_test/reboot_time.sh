@@ -30,7 +30,7 @@ modprobe ipmi_devintf
 
 sleep 5
 
-mkdir $Result_path 2>&1
+mkdir $Result_path >/dev/null 2>&1
 
 s=$( ipmitool sel list | grep -i interrupt )
 t=$( ipmitool sel list | wc -l )
