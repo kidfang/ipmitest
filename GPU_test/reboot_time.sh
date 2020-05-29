@@ -1,0 +1,104 @@
+#!/bin/bash
+# value to identify the detected data
+
+Result_path=/root/Reboot
+
+
+modprobe ipmi_si
+modprobe ipmi_devintf
+#modprobe nvidia_modeset    # NVIDIA GPU only
+#modprobe nvidia_drm        # NVIDIA GPU only
+#modprobe nvidia            # NVIDIA GPU only
+
+sleep 5
+
+s=$( ipmitool sel list | grep -i interrupt )
+t=$( ipmitool sel list | wc -l )
+u=$( dmesg | grep -i corrected | wc -l )
+v=$( ipmitool sel list | grep -i interrupt | wc -l )
+w=$( lspci | wc -l )    # AMD GPU card need change to vega
+x=$( lsscsi | wc -l )                    # Need check yourself
+y=$( cat $Result_path/count.txt )
+z=$( ls $Result_path | grep count.txt | wc -l )
+#j=$( nvidia-smi -a | grep -i vbios | wc -l )  # for NVIDIA GPU
+#j=$( /opt/rocm/bin/rocm-smi -i | grep -i GPU | wc -l )  # for AMD GPU
+
+# Detect the reboot count number
+
+if [ $z -eq 0 ];then
+	echo 0 > $Result_path/count.txt
+	date +%s > $Result_path/start_time.txt
+else
+	echo "$y"
+	y=$((y+1))
+	echo $y > $Result_path/count.txt
+fi
+
+# Detect the IPMI is fully logged and cleared
+
+if [ $t -eq 1024 ];then
+	ipmitool sel clear
+else
+	echo "continue"
+fi
+
+# the x can detect the SCSI device, which can be used for
+# Virtual Media to disable the reboot process
+# the w is reflecting the GPU detected amount, be warned with
+# the consumer card with HDMI Audio device equipped.
+# the u and v is reflecting the OS event & ipmi event for
+# monitor the event listed the PCIe Error.
+# command to Power Cycle is -> ipmitool chassis power cycle
+
+Start_time=$(cat $Result_path/start_time.txt)
+End_time=$(date +%s)
+During_time=$(($End_time-$Start_time))
+
+echo $Start_time
+echo $End_time
+echo $During_time
+
+if [ $x -eq 1 ];then    # Need check yourself
+	if [ $w -eq 176 ];then  # Need check yourself
+		if [ $v -eq 0 ] && [ $u -eq 0 ];then
+
+			date >> $Result_path/rebootrec.txt
+			echo PASS >> $Result_path/rebootrec.txt
+
+				if [ $During_time -le 43200 ];then
+#					ipmitool chassis power cycle
+					sleep 5
+					init 6
+				else	
+					Start_time_d=$(date +%Y-%m-%d\ %H:%M:%S -d "1970-01-01 UTC $Start_time seconds")
+					End_time_d=$(date +%Y-%m-%d\ %H:%M:%S -d "1970-01-01 UTC $End_time seconds")
+					echo "Start_time: $Start_time_d" >> $Result_path/rebootrec.txt
+					echo "End_time: $End_time_d" >> $Result_path/rebootrec.txt
+					echo "Test time: $During_time sec" >> $Result_path/rebootrec.txt
+					sleep 10
+				        dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" > $Result_path/dmesg_reboot_12hrs_done.txt
+					dmesg > $Result_path/dmesg_reboot_12hrs_done_all.txt
+				        ipmitool sel list > $Result_path/ipmi_reboot_12hrs_done_eventlog.txt
+					exit 0
+				fi
+					
+		else
+			echo $u > $Result_path/OSevent.txt
+			echo $s > $Result_path/IPMIevent.txt
+			dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" > $Result_path/dmesg_error.txt
+			dmesg > $Result_path/dmesg_error_all.txt
+			ipmitool sel list > $Result_path/ipmi_eventlog.txt
+			exit 0
+		fi
+	else
+		echo $w > $Result_path/GPUcounterr.txt
+		lspci | grep -i NVIDIA > GPU_list.txt
+		exit 0
+	fi
+else
+	echo {Other error or stopped by user}
+	dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" > $Result_path/dmesg_reboot_done.txt
+	dmesg > $Result_path/dmesg_reboot_done_all.txt
+	ipmitool sel list > $Result_path/ipmi_reboot_done_eventlog.txt
+	exit 0
+fi
