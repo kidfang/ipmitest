@@ -1,31 +1,50 @@
 #!/bin/bash
 # value to identify the detected data
 
-Result_path=/root/Reboot
+Result_path=/root/Reboot  # Path to save test log 
+Reboot_time=43200         # Time for your reboot or powercycle test (sec) 
+scsi_num=1                # Type "lsscsi | wc -l" to chek your scsi drive number 
+GPU_num=8                 # Type "lspci | grep -i NVIDIA | wc -l" to chek your GPU detected amount
+Test_type=0               # Input 0 for Powercycle, 1 for Reboot test 
 
+#modprobe nvidia_modeset    # Delete hashtag to Enable for NVIDIA GPU 
+#modprobe nvidia_drm        # Delete hashtag to Enable for NVIDIA GPU 
+#modprobe nvidia            # Delete hashtag to Enable for NVIDIA GPU 
+
+w=$( lspci | grep -i NVIDIA | wc -l )                    # AMD GPU card need change to vega
+#j=$( nvidia-smi -a | grep -i vbios | wc -l )            # Delete hashtag to Enable for NVIDIA GPU
+#j=$( /opt/rocm/bin/rocm-smi -i | grep -i GPU | wc -l )  # Delete hashtag to Enable for AMD GPU
+
+# Besure as follows command result all 0, before start this test!!!
+# dmesg | grep -i corrected | wc -l
+# ipmitool sel list | grep -i interrupt | wc -l 
+
+########### Please Modify above parameter for your test ###########
+###################################################################
+###################################################################
+###################################################################
+###################################################################
 
 modprobe ipmi_si
 modprobe ipmi_devintf
-#modprobe nvidia_modeset    # NVIDIA GPU only
-#modprobe nvidia_drm        # NVIDIA GPU only
-#modprobe nvidia            # NVIDIA GPU only
 
 sleep 5
+
+mkdir $Result_path 2>&1
 
 s=$( ipmitool sel list | grep -i interrupt )
 t=$( ipmitool sel list | wc -l )
 u=$( dmesg | grep -i corrected | wc -l )
 v=$( ipmitool sel list | grep -i interrupt | wc -l )
-w=$( lspci | wc -l )    # AMD GPU card need change to vega
-x=$( lsscsi | wc -l )                    # Need check yourself
+x=$( lsscsi | wc -l )                    
 y=$( cat $Result_path/count.txt )
 z=$( ls $Result_path | grep count.txt | wc -l )
-#j=$( nvidia-smi -a | grep -i vbios | wc -l )  # for NVIDIA GPU
-#j=$( /opt/rocm/bin/rocm-smi -i | grep -i GPU | wc -l )  # for AMD GPU
 
 # Detect the reboot count number
 
 if [ $z -eq 0 ];then
+	touch $Result_path/count.txt
+	touch $Result_path/rebootrec.txt
 	echo 0 > $Result_path/count.txt
 	date +%s > $Result_path/start_time.txt
 else
@@ -58,17 +77,21 @@ echo $Start_time
 echo $End_time
 echo $During_time
 
-if [ $x -eq 1 ];then    # Need check yourself
-	if [ $w -eq 176 ];then  # Need check yourself
+if [ $x -eq $scsi_num ];then    
+	if [ $w -eq $GPU_num ];then  
 		if [ $v -eq 0 ] && [ $u -eq 0 ];then
 
 			date >> $Result_path/rebootrec.txt
 			echo PASS >> $Result_path/rebootrec.txt
 
-				if [ $During_time -le 43200 ];then
-#					ipmitool chassis power cycle
-					sleep 5
-					init 6
+				if [ $During_time -le $Reboot_time ];then
+					if [ $Test_type -eq 0 ];then
+						sleep 5
+						ipmitool chassis power cycle
+					else
+						sleep 5
+						init 6
+					fi
 				else	
 					Start_time_d=$(date +%Y-%m-%d\ %H:%M:%S -d "1970-01-01 UTC $Start_time seconds")
 					End_time_d=$(date +%Y-%m-%d\ %H:%M:%S -d "1970-01-01 UTC $End_time seconds")
@@ -92,7 +115,7 @@ if [ $x -eq 1 ];then    # Need check yourself
 		fi
 	else
 		echo $w > $Result_path/GPUcounterr.txt
-		lspci | grep -i NVIDIA > GPU_list.txt
+		lspci | grep -i NVIDIA > $Result_path/GPU_list.txt
 		exit 0
 	fi
 else
