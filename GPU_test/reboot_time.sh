@@ -49,6 +49,8 @@ if [ $z -eq 0 ];then
         touch $Result_path/rebootrec.txt
         echo 0 > $Result_path/count.txt
         date +%s > $Result_path/start_time.txt
+        sleep 5
+        init 6
 else
         echo "$y"
         y=$((y+1))
@@ -94,10 +96,10 @@ if [ $x -eq $scsi_num ];then
 
                                 if [ $During_time -le $Reboot_time ];then
                                         if [ $Test_type -eq 0 ];then
-                                                sleep 5
+                                                sleep 10
                                                 ipmitool chassis power cycle
                                         else
-                                                sleep 5
+                                                sleep 10
                                                 init 6
                                         fi
                                 else
