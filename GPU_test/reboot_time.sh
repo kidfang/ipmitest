@@ -4,6 +4,7 @@
 Result_path=/root/Reboot  # Path to save test log
 Reboot_time=14400         # Time for your reboot or powercycle test (sec)
 scsi_num=1                # Type "lsscsi | wc -l" to chek your scsi drive number
+GPU_kw=NVIDIA         # Type the keyword ex. NVIDIA, AMD GPU card need change to vega
 GPU_num=32                # Type "lspci | grep -i NVIDIA | wc -l" to chek your GPU detected amount
 GPU_N=8                   # Real GPU card number system installed
 Test_type=1               # Input 0 for Powercycle, 1 for Reboot test
@@ -12,7 +13,6 @@ modprobe nvidia_modeset    # Delete hashtag to Enable for NVIDIA GPU
 modprobe nvidia_drm        # Delete hashtag to Enable for NVIDIA GPU
 modprobe nvidia            # Delete hashtag to Enable for NVIDIA GPU
 
-w=$( lspci | grep -i NVIDIA | wc -l )                    # AMD GPU card need change to vega
 j=$( nvidia-smi -a | grep -i vbios | wc -l )            # Delete hashtag to Enable for NVIDIA GPU
 #j=$( /opt/rocm/bin/rocm-smi -i | grep -i GPU | wc -l )  # Delete hashtag to Enable for AMD GPU
 
@@ -38,6 +38,7 @@ s=$( ipmitool sel list | grep -i interrupt )
 t=$( ipmitool sel list | wc -l )
 u=$( dmesg | grep -i corrected | wc -l )
 v=$( ipmitool sel list | grep -i interrupt | wc -l )
+w=$( lspci | grep -i $GPU_kw | wc -l )
 x=$( lsscsi | wc -l )
 y=$( cat $Result_path/count.txt )
 z=$( ls $Result_path | grep count.txt | wc -l )
@@ -125,7 +126,10 @@ if [ $x -eq $scsi_num ];then
                 fi
         else
                 echo $w > $Result_path/GPUcounterr_"$Test_name".txt
-                lspci | grep -i NVIDIA > $Result_path/GPU_list_"$Test_name".txt
+                lspci | grep -i $GPU_kw > $Result_path/GPU_list_"$Test_name".txt
+                dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" > $Result_path/dmesg_error_"$Test_name".txt
+                dmesg > $Result_path/dmesg_error_all_"$Test_name".txt
+                ipmitool sel elist > $Result_path/ipmi_eventlog_"$Test_name".txt
                 exit 0
         fi
 else
