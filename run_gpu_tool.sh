@@ -146,6 +146,19 @@ $CUDA_path/1_Utilities/bandwidthTest/bandwidthTest --device=all | tee $result_ou
 
 }
 
+nv_bw_all_test()
+
+{
+
+GPU_num=$( nvidia-smi -q | grep -i vbios | wc -l )
+
+for (( i=0; i<$GPU_num; i=i+1 ));
+  do
+  $CUDA_path/1_Utilities/bandwidthTest/bandwidthTest --device=$i | tee -a $result_output/GPU_bw_all.txt &
+  done 
+
+}
+
 rvs_p2p_test()
 
 {
@@ -198,6 +211,10 @@ case ${test_type} in
 	"nv_bw")
 		echo "Start to test nvidia bw ... "
 		nv_bw_test 1
+		;;
+	"nv_bw_all")
+		echo "Start to test nvidia bw all ... "
+		nv_bw_all_test 1
 		;;
 	"nv_basic")
 		echo "Start to save the basic information ... "
