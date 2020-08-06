@@ -13,7 +13,7 @@ pw=password
 date | tee -a ipmi_mode_switch.txt
 echo -e "\n\n------" | tee -a ipmi_mode_switch.txt
 
-for ((i=1;i<=9999999999;i=i+1))
+for ((i=1;i<=20;i=i+1))
 do
 	ipmitool -H $share_fail -I lanplus -U $ac -P $pw raw 0x2e 0x20 0x0a 0x3c 0 83 1
 	sleep 60
