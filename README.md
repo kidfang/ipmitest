@@ -28,3 +28,9 @@ yum install https://www.elrepo.org/elrepo-release-8.0-2.el8.elrepo.noarch.rpm
 rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 
 yum -y --enablerepo=elrepo-kernel install kernel-ml
+
+# Subscript RHEL
+
+subscription-manager register --username xxxxx --password xxxxx
+subscription-manager attach --auto
+subscription-manager repos --enable rhel-7-server-optional-rpms
