@@ -32,5 +32,8 @@ yum -y --enablerepo=elrepo-kernel install kernel-ml
 # Subscript RHEL
 
 subscription-manager register --username xxxxx --password xxxxx
+
 subscription-manager attach --auto
+
 subscription-manager repos --enable rhel-7-server-optional-rpms
+
