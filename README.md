@@ -37,3 +37,6 @@ subscription-manager attach --auto
 
 subscription-manager repos --enable rhel-7-server-optional-rpms
 
+# Linux OS crash to fix
+
+xfs_repair -v -L /dev/dm-0
