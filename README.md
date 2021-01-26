@@ -31,7 +31,7 @@ yum -y --enablerepo=elrepo-kernel install kernel-ml
 
 # Change default kernel on Boot - CentOS
 
-awk -F \' '$1=="menuentry " {print $2}' /etc/grub2.cfg
+https://www.digitalocean.com/community/questions/change-default-kernel-on-boot-centos
 
 ex: grub2-set-default 2
 
