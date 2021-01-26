@@ -29,6 +29,12 @@ rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 
 yum -y --enablerepo=elrepo-kernel install kernel-ml
 
+# Change default kernel on Boot - CentOS
+
+awk -F\' '$1=="menuentry " {print $2}' /etc/grub2.cfg
+
+ex: grub2-set-default 2
+
 # Subscript RHEL
 
 subscription-manager register --username xxxxx --password xxxxx
