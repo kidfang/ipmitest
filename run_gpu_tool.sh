@@ -16,7 +16,7 @@ NV_Install_tool()
 {
 
 git clone https://github.com/wilicc/gpu-burn.git
-git clone https://github.com/tbennun/mgbench.git
+##git clone https://github.com/tbennun/mgbench.git
 
 echo "
 blacklist nouveau
