@@ -9,3 +9,7 @@ http://www.ab126.com/clock/1697.html
 
 cat >> test.sh << EOF
 ls non >> test.sh 2>&1
+
+k=8
+d=$[$k/2]
+echo $d
