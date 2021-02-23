@@ -51,6 +51,10 @@ if [ $z -eq 0 ];then
         echo 0 > $Result_path/count.txt
         date +%s > $Result_path/start_time.txt
         sleep 5
+        
+        /root/ipmitest/speed_numa_check_all.sh 1 > $Result_path/speed_org.txt
+        sleep 5
+        
         init 6
 else
         echo "$y"
@@ -88,9 +92,13 @@ else
         Test_name=reboot
 fi
 
+dd=0
+##/root/ipmitest/speed_numa_check_all.sh 1 > $Result_path/speed_test.txt
+##dd=$( diff "$Result_path"/speed_test.txt "$Result_path"/speed_org.txt | wc -l )
+
 if [ $x -eq $scsi_num ];then
         if [ $w -eq $GPU_num ] && [ $j -eq $GPU_N ];then
-                if [ $v -eq 0 ] && [ $u -eq 0 ];then
+                if [ $v -eq 0 ] && [ $u -eq 0 ] && [ $dd -eq 0 ];then
 
                         date >> $Result_path/rebootrec.txt
                         echo PASS >> $Result_path/rebootrec.txt
