@@ -83,20 +83,24 @@ nv_basic_info()
 
 mkdir $result_output/Basic_info
 
-nvidia-smi | tee $result_output/Basic_info/nvidia_smi.log
-nvidia-smi -a | tee $result_output/Basic_info/nvidia_smi_a.log
-nvidia-smi -q | tee $result_output/Basic_info/nvidia_smi_q.log
-nvidia-smi -q | grep -i vbios | tee $result_output/Basic_info/nvidia_smi_vbios.log
+nvidia-smi | tee $result_output/Basic_info/nvidia_smi.txt
+nvidia-smi -a | tee $result_output/Basic_info/nvidia_smi_a.txt
+nvidia-smi -q | tee $result_output/Basic_info/nvidia_smi_q.txt
+nvidia-smi -q | grep -i vbios | tee $result_output/Basic_info/nvidia_smi_vbios.txt
 
 nvidia-smi -q | grep -i "GPU 00000000:" | tee -a $result_output/Basic_info/GPU_SN_mapping.txt
 nvidia-smi -q | grep -i "Serial" | tee -a $result_output/Basic_info/GPU_SN_mapping.txt
 
-lshw -c memory -short | tee  $result_output/Basic_info/mem_info.log
-dmidecode -t memory | tee $result_output/Basic_info/mem.log
-dmidecode -t bios | tee $result_output/Basic_info/bios.log
-lspci | grep -i NVIDIA | tee $result_output/Basic_info/nvidia_gpu_pcie.log
-lspci -tv | tee $result_output/Basic_info/lspci_tv.log
-lscpu | tee $result_output/Basic_info/lscpu.log
+lshw -c memory -short | tee  $result_output/Basic_info/mem_info.txt
+dmidecode -t memory | tee $result_output/Basic_info/mem.txt
+dmidecode -t bios | tee $result_output/Basic_info/bios.txt
+lspci | grep -i NVIDIA | tee $result_output/Basic_info/nvidia_gpu_pcie.txt
+lspci -tv | tee $result_output/Basic_info/lspci_tv.txt
+lscpu | tee $result_output/Basic_info/lscpu.txt
+
+lspci -vvvd 10ee: | tee $result_output/Basic_info/lspci_10ee.txt
+lspci | tee $result_output/Basic_info/lspci.txt
+lspci -vvv | tee $result_output/Basic_info/lspci_vvv.txt
 
 }
 
