@@ -41,7 +41,11 @@ subscription-manager register --username xxxxx --password xxxxx
 
 subscription-manager attach --auto
 
+[RHEL7]
 subscription-manager repos --enable rhel-7-server-optional-rpms
+
+[RHEL8]
+subscription-manager repos --enable rhel-8-for-x86_64-baseos-source-rpms
 
 # Linux OS crash to fix
 
