@@ -1,0 +1,15 @@
+$ git clone https://github.com/intel/ledmon.git
+$ git clone https://github.com/hreinecke/sg3_utils.git
+
+Before installation
+$ vim usr/include/x86_64-linux-gnu/sys/types.h
+Find line
+typedef __u_short u_short; 
+replace to 
+typedef unsigned char u_char;
+
+$ vim sg3_utils/src/sg_get_elem_status.c
+Delete first line “PROPS-END”
+
+Install sg3_utils first then install ledmon
+
