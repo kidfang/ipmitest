@@ -13,3 +13,8 @@ Delete first line “PROPS-END”
 
 Install sg3_utils first then install ledmon
 
+
+[sg3_utils]
+./configure ; make ; make install
+
+[ledmon]
