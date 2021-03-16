@@ -18,7 +18,7 @@ Install sg3_utils first then install ledmon
 ./configure ; make ; make install
 
 [ledmon]
-apt-get install autoconf automake libtool
+apt-get install autoconf automake libtool pkg-config libudev-dev libpci-dev
 ./autogen.sh
 ./configure
 make
