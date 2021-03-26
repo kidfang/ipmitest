@@ -95,7 +95,7 @@ info_name=$2
 if [ $info_ty = 1 ]; then
 
 	echo -e "[This script will clear all LogServices/Logs please check log is empty]\n"
-	curl -k -u $red_user:$red_pw -H "content-type:application/json" -X POST -d '{"ClearType":"ClearAll"}' http://$bmcip/redfish/v1/Chassis/Self/LogServices/Logs/Actions/LogService.ClearLog
+	curl -k -u $red_user:$red_pw -H "content-type:application/json" -X POST -d '{"ClearType":"ClearAll"}' https://$bmcip/redfish/v1/Chassis/Self/LogServices/Logs/Actions/LogService.ClearLog
 	
 	sleep 10
 
@@ -137,7 +137,7 @@ int_pa=$3
 int_name=$4
 
 echo -e "[This script will do "$int_name" please check the reaction...]\n"
-eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -X POST -d '{\"$int_ty\":\"$int_ac\"}' http://$bmcip/redfish/v1/Managers/Self$int_pa
+eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -X POST -d '{\"$int_ty\":\"$int_ac\"}' https://$bmcip/redfish/v1/Managers/Self$int_pa
 
 if [ $int_name = BMC_SEL_log_clear ]; then
 
@@ -257,7 +257,7 @@ if [ $int_ty = add ]; then
 
 echo -e "1. Add subscription.\n" >> 4-7_Event_test_"$SUT_name".txt
 
-curl -k -u $red_user:$red_pw -H content-type:application/json -d '{"Destination":"http://10.2.0.1","EventTypes":["StatusChange"],"Context":"Gigabyte","Protocol":"Redfish"}' -X POST https://$bmcip/redfish/v1/EventService/Subscriptions | jq '.' >> 4-7_Event_test_"$SUT_name".txt
+curl -k -u $red_user:$red_pw -H content-type:application/json -d '{"Destination":"https://10.2.0.1","EventTypes":["StatusChange"],"Context":"Gigabyte","Protocol":"Redfish"}' -X POST https://$bmcip/redfish/v1/EventService/Subscriptions | jq '.' >> 4-7_Event_test_"$SUT_name".txt
 
 echo -e "\n-------------------------\n" >> 4-7_Event_test_"$SUT_name".txt
 echo -e "2. Check subscription.\n" >> 4-7_Event_test_"$SUT_name".txt
