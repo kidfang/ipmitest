@@ -50,12 +50,12 @@ elif [ $bs_s = 1 ]; then
 	echo -e "\n-------------------------\n\nBootSourceOverrideEnabled: $bs_e"
         echo -e "BootSourceOverrideTarget: $bs_t"
 	echo -e "BootSourceOverrideMode: $bs_m\n"
-	eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -X PATCH -d '{\"Boot\":{\"BootSourceOverrideEnabled\":\"$bs_e\"\,\"BootSourceOverrideMode\":\"$bs_m\"\,\"BootSourceOverrideTarget\":\"$bs_t\"}}' http://$bmcip/redfish/v1/Systems/Self | jq
+	eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -X PATCH -d '{\"Boot\":{\"BootSourceOverrideEnabled\":\"$bs_e\"\,\"BootSourceOverrideMode\":\"$bs_m\"\,\"BootSourceOverrideTarget\":\"$bs_t\"}}' https://$bmcip/redfish/v1/Systems/Self -H  \'If-Match\: \* \' | jq
 	echo -e "\n-------------------------\n\n"
 else
 	echo -e "\n-------------------------\n\nBootSourceOverrideEnabled: $bs_e"
 	echo -e "BootSourceOverrideTarget: $bs_t\n"
-	eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -X PATCH -d '{\"Boot\":{\"BootSourceOverrideEnabled\":\"$bs_e\"\,\"BootSourceOverrideTarget\":\"$bs_t\"}}' http://$bmcip/redfish/v1/Systems/Self | jq
+	eval curl -k -u $red_user:$red_pw -H "content-type:application/json" -X PATCH -d '{\"Boot\":{\"BootSourceOverrideEnabled\":\"$bs_e\"\,\"BootSourceOverrideTarget\":\"$bs_t\"}}' https://$bmcip/redfish/v1/Systems/Self -H  \'If-Match\: \* \' | jq
 	echo -e "\n-------------------------\n\n"
 fi
 
