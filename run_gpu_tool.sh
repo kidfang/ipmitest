@@ -98,7 +98,7 @@ lspci | grep -i NVIDIA | tee $result_output/Basic_info/nvidia_gpu_pcie.txt
 lspci -tv | tee $result_output/Basic_info/lspci_tv.txt
 lscpu | tee $result_output/Basic_info/lscpu.txt
 
-lspci -vvvd 10ee: | tee $result_output/Basic_info/lspci_10ee.txt
+lspci -vvvd 10de: | tee $result_output/Basic_info/lspci_10ee.txt
 lspci | tee $result_output/Basic_info/lspci.txt
 lspci -vvv | tee $result_output/Basic_info/lspci_vvv.txt
 
