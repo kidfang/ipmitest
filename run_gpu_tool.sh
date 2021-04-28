@@ -102,6 +102,8 @@ lspci -vvvd 10de: | tee $result_output/Basic_info/lspci_10de.txt
 lspci | tee $result_output/Basic_info/lspci.txt
 lspci -vvv | tee $result_output/Basic_info/lspci_vvv.txt
 
+ipmitool mc info | tee $result_output/Basic_info/ipmi_mc_info.txt
+
 }
 
 amd_basic_info()
