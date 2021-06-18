@@ -112,11 +112,11 @@ amd_basic_info()
 
 mkdir $result_output/Basic_info
 
-$rocm_path/rocm-smi | tee $result_output/Basic_info/rocm_smi.txt
-$rocm_path/rocm-smi -a | tee $result_output/Basic_info/rocm_smi_a.txt
-$rocm_path/rocm-smi -v | tee $result_output/Basic_info/rocm_smi_v.txt
-$rocm_path/rocminfo | tee $result_output/Basic_info/rocminfo.txt
-/opt/rocm/opencl/bin/x86_64/clinfo | tee $result_output/Basic_info/clinfo.txt
+rocm-smi | tee $result_output/Basic_info/rocm_smi.txt
+rocm-smi -a | tee $result_output/Basic_info/rocm_smi_a.txt
+rocm-smi -v | tee $result_output/Basic_info/rocm_smi_v.txt
+rocminfo | tee $result_output/Basic_info/rocminfo.txt
+/opt/rocm/opencl/bin/clinfo | tee $result_output/Basic_info/clinfo.txt
 
 lshw -c memory -short | tee $result_output/Basic_info/mem_info.log
 dmidecode -t memory | tee $result_output/Basic_info/mem.log
@@ -124,8 +124,15 @@ dmidecode -t bios | tee $result_output/Basic_info/bios.log
 lspci | grep -F [AMD/ATI] | tee $result_output/Basic_info/amd_gpu_pcie.log
 lspci -tv | tee $result_output/Basic_info/lspci_tv.log
 lscpu | tee $result_output/Basic_info/lscpu.log
-dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" | tee $result_output/Basic_info/dmesg.txt
-dmesg | tee $result_output/Basic_info/dmesg_all.txt
+
+lspci -vvvd 1002: | tee $result_output/Basic_info/lspci_1002.txt
+lspci | tee $result_output/Basic_info/lspci.txt
+lspci -vvv | tee $result_output/Basic_info/lspci_vvv.txt
+
+#dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" | tee $result_output/Basic_info/dmesg.txt
+#dmesg | tee $result_output/Basic_info/dmesg_all.txt
+
+ipmitool mc info | tee $result_output/Basic_info/ipmi_mc_info.txt
 
 }
 
