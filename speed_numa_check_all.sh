@@ -1,3 +1,5 @@
+#!/bin/bash
+
 test_type=$1
 
 check()
