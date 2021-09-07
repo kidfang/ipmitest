@@ -41,6 +41,14 @@ subscription-manager register --username xxxxx --password xxxxx
 
 subscription-manager attach --auto
 
+[HTTP error issue solved]
+
+Adding the system as a new system to https://access.redhat.com/management/systems/create and registering the system with the generated UUID on the portal:
+
+subscription-manager register --consumerid=UUID
+
+The UUID can be found by clicking on the host name in UUID from https://access.redhat.com/management/systems
+
 [RHEL7]
 subscription-manager repos --enable rhel-7-server-optional-rpms
 
