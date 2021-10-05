@@ -49,6 +49,19 @@ subscription-manager register --consumerid=UUID
 
 The UUID can be found by clicking on the host name in UUID from https://access.redhat.com/management/systems
 
+[SSL error]
+
+Unable to verify server's identity: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:897)
+
+follow the steps below:
+
+vi /etc/rhsm/rhsm.conf
+
+Set to 1 to disable certificate validation:
+insecure = 1
+
+https://access.redhat.com/discussions/4487561
+
 [RHEL7]
 subscription-manager repos --enable rhel-7-server-optional-rpms
 
