@@ -101,11 +101,13 @@ Control Panel\Programs\Programs and Features
 Turn Windows feature on or off
 Check "Services for NFS" enable
 
-2.  \\192.168.50.190\var\nfsshare
+2.    \\192.168.50.190\var\nfsshare
 
 [Linux OS ubuntu]
 apt-get install nfs-common
+
 mount -t nfs 192.168.50.190:/var/nfsshare /mnt -o nolock
+
 cd /mnt
 
 => will find the file under NFS Server
@@ -123,9 +125,13 @@ b. Linux
 yum install ftp
 
 ftp 192.168.50.1
+
 ls
+
 cd
+
 lcd /root    //set download file locate
+
 get $filename
 
 [Update]
