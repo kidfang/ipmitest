@@ -71,3 +71,62 @@ subscription-manager repos --enable rhel-8-for-x86_64-baseos-source-rpms
 # Linux OS crash to fix
 
 xfs_repair -v -L /dev/dm-0
+
+# NFS server (Ubuntu20.04.1)
+
+apt-get install nfs-kernel-server nfs-common
+
+mkdir -p /var/nfsshare
+chmod -R 777 /var/nfsshare/
+
+vi  /etc/exports
+
+=> /var/nfsshare    *(rw,sync,no_root_squash,no_all_squash,insecure)
+
+/etc/init.d/nfs-kernel-server restart
+showmount -e
+=> Export list for test:
+=> /var/nfsshare *
+
+cat /proc/filesystems
+=> check support nfsd
+
+----------
+
+# Client into NFS
+
+[Windows 10]
+1. Enable NFS service
+Control Panel\Programs\Programs and Features
+Turn Windows feature on or off
+Check "Services for NFS" enable
+
+2.  \\192.168.50.190\var\nfsshare
+
+[Linux OS ubuntu]
+apt-get install nfs-common
+mount -t nfs 192.168.50.190:/var/nfsshare /mnt -o nolock
+cd /mnt
+
+=> will find the file under NFS Server
+
+---------------
+
+# FTP Server 
+
+[Download]
+
+a. Windows 
+ftp://192.168.50.1
+
+b. Linux
+yum install ftp
+
+ftp 192.168.50.1
+ls
+cd
+lcd /root    //set download file locate
+get $filename
+
+[Update]
+put /path/file
