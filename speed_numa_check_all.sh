@@ -72,8 +72,23 @@ case ${test_type} in
                 echo -e "\n[LSI raid card]\n\n"
                 check LSI
                 ;;
+	"a")
+                echo -e "\n[Qualcomm FPGA card]\n\n"
+                check Qualcomm
+                ;;
 
 	*)
-		echo -e "\nInput what device you want to check\n\nNvidia_GPU=1,\n\nAMD_GPU=2,\n\nCambricon_GPU=3,\n\nNVMe_Device=4,\n\nLan_card=5,\n\nIntel_FPGA_Stratix_card=6,\n\nIntel_FPGA_Arria_card=7,\n\nXilinx FPGA card=8, \n\nLSI raid card\n"
+		echo -e "\nInput what device you want to check\n
+			Nvidia_GPU=1,
+			AMD_GPU=2,
+			Cambricon_GPU=3,
+			NVMe_Device=4,
+			Lan_card=5,
+			Intel_FPGA_Stratix_card=6,
+			Intel_FPGA_Arria_card=7,
+			Xilinx FPGA card=8, 
+			LSI raid card=9,
+			Qualcomm FPGA card=a
+			"
 		;;
 esac
