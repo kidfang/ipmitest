@@ -80,15 +80,25 @@ case ${test_type} in
 	*)
 		echo -e "\nInput what device you want to check\n
 			Nvidia_GPU=1,
+			
 			AMD_GPU=2,
+			
 			Cambricon_GPU=3,
+			
 			NVMe_Device=4,
+			
 			Lan_card=5,
+			
 			Intel_FPGA_Stratix_card=6,
+			
 			Intel_FPGA_Arria_card=7,
+			
 			Xilinx FPGA card=8, 
+			
 			LSI raid card=9,
+			
 			Qualcomm FPGA card=a
+			
 			"
 		;;
 esac
