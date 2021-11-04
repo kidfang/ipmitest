@@ -73,7 +73,7 @@ case ${test_type} in
                 check LSI
                 ;;
 	"a")
-                echo -e "\n[Qualcomm FPGA card]\n\n"
+                echo -e "\n[Qualcomm AI card]\n\n"
                 check Qualcomm
                 ;;
 
@@ -97,7 +97,7 @@ case ${test_type} in
 			
 			LSI raid card=9,
 			
-			Qualcomm FPGA card=a
+			Qualcomm AI card=a
 			
 			"
 		;;
