@@ -1,0 +1,10 @@
+[Unit]
+Description=Power Cycle test
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/reboot.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
