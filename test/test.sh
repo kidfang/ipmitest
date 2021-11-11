@@ -20,3 +20,9 @@ echo $d
  00
  
  23 => MB CPLD 22=> BPB CPLD
+
+
+numactl --hardware
+
+apt install hwloc
+lstopo --of png > server.png
