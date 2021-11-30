@@ -103,6 +103,7 @@ lspci | tee $result_output/Basic_info/lspci.txt
 lspci -vvv | tee $result_output/Basic_info/lspci_vvv.txt
 
 ipmitool mc info | tee $result_output/Basic_info/ipmi_mc_info.txt
+ipmitool sensor list | tee $result_output/Basic_info/ipmi_sensor_list_idle.txt
 
 }
 
