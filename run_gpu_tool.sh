@@ -87,6 +87,7 @@ nvidia-smi | tee $result_output/Basic_info/nvidia_smi.txt
 nvidia-smi -a | tee $result_output/Basic_info/nvidia_smi_a.txt
 nvidia-smi -q | tee $result_output/Basic_info/nvidia_smi_q.txt
 nvidia-smi -q | grep -i vbios | tee $result_output/Basic_info/nvidia_smi_vbios.txt
+nvidia-smi topo -m | tee $result_output/Basic_info/nvidia_smi_topo.txt
 
 nvidia-smi -q | grep -i "GPU 00000000:" | tee -a $result_output/Basic_info/GPU_SN_mapping.txt
 nvidia-smi -q | grep -i "Serial" | tee -a $result_output/Basic_info/GPU_SN_mapping.txt
