@@ -1,23 +1,20 @@
 #!/bin/bash
 # value to identify the detected data
 
-Result_path=/root/A16/Reboot  # Path to save test log
+Result_path=/root/A100/DC_off_on  # Path to save test log
 Reboot_time=14400             # Time for your reboot or powercycle test (sec)
 scsi_num=1                    # Type "lsscsi | wc -l" to chek your scsi drive number
 GPU_kw=NVIDIA                 # Type the keyword ex. NVIDIA, AMD GPU card need change to vega
-GPU_num=16                    # Type "lspci | grep -i NVIDIA | wc -l" to chek your GPU detected amount
-GPU_N=16                      # Real GPU card number system installed
+GPU_num=8                    # Type "lspci | grep -i NVIDIA | wc -l" to chek your GPU detected amount
+GPU_N=8                      # Real GPU card number system installed
 
 Test_type=1               # Input 0 for Powercycle, 1 for Reboot test
-
 
 modprobe nvidia_modeset    # Delete hashtag to Enable for NVIDIA GPU
 modprobe nvidia_drm        # Delete hashtag to Enable for NVIDIA GPU
 modprobe nvidia            # Delete hashtag to Enable for NVIDIA GPU
 nvidia-smi -pm 1           # Delete hashtag to Enable for NVIDIA GPU
 
-#sd=$( dmesg | grep -i "6.0 Gbps" | wc -l )
-#j=$( free -g | awk '/Mem:/ {print $2}' )
 j=$( nvidia-smi -a | grep -i vbios | wc -l )             # Delete hashtag to Enable for NVIDIA GPU
 #j=$( /opt/rocm/bin/rocm-smi -i | grep -i GPU | wc -l )  # Delete hashtag to Enable for AMD GPU
 
@@ -43,7 +40,6 @@ s=$( ipmitool sel list | grep -i interrupt )
 t=$( ipmitool sel list | wc -l )
 u=$( dmesg | grep -i corrected | wc -l )
 v=$( ipmitool sel list | grep -i interrupt | wc -l )
-#w=$( lspci | wc -l )
 w=$( lspci | grep -i $GPU_kw | wc -l )
 x=$( lsscsi | wc -l )
 y=$( cat $Result_path/count.txt )
@@ -76,11 +72,8 @@ if [ $z -eq 0 ];then
         date +%s > $Result_path/start_time.txt
         sleep 5
  
-	/root/ipmitest/speed_numa_check_all.sh 1 > $Result_path/speed_org.txt       
-#	/root/ipmitest/speed_numa_check_all.sh 2 > $Result_path/speed_org.txt
-#	/root/ipmitest/speed_numa_check_all.sh 4 > $Result_path/speed_org.txt
-#       /root/ipmitest/speed_numa_check_all.sh 5 >> $Result_path/speed_org.txt
-#	/root/ipmitest/speed_numa_check_all.sh 9 >> $Result_path/speed_org.txt
+	/root/speed_numa_check_all.sh 1 > $Result_path/speed_org.txt       
+
         sleep 5
         
         init 6
@@ -120,20 +113,13 @@ else
         Test_name=reboot
 fi
 
-#sd=$( dmesg | grep -i "6.0 Gbps" | wc -l )
-#dd=0
-/root/ipmitest/speed_numa_check_all.sh 1 > $Result_path/speed_test.txt
-#/root/ipmitest/speed_numa_check_all.sh 2 > $Result_path/speed_test.txt
-#/root/ipmitest/speed_numa_check_all.sh 4 > $Result_path/speed_test.txt
-#/root/ipmitest/speed_numa_check_all.sh 5 >> $Result_path/speed_test.txt
-#/root/ipmitest/speed_numa_check_all.sh 9 >> $Result_path/speed_test.txt
+/root/speed_numa_check_all.sh 1 > $Result_path/speed_test.txt
 
 dd=$( diff "$Result_path"/speed_test.txt "$Result_path"/speed_org.txt | wc -l )
-sd=4
 
 if [ $x -eq $scsi_num ];then
         if [ $w -eq $GPU_num ] && [ $j -eq $GPU_N ];then
-                if [ $v -eq 0 ] && [ $u -eq 0 ] && [ $dd -eq 0 ] && [ $sd -eq 4 ];then
+                if [ $v -eq 0 ] && [ $u -eq 0 ] && [ $dd -eq 0 ];then
 
                         date >> $Result_path/rebootrec.txt
                         echo PASS >> $Result_path/rebootrec.txt
@@ -175,6 +161,8 @@ if [ $x -eq $scsi_num ];then
                         dmesg > $Result_path/dmesg_error_all_"$Test_name".txt
                         ipmitool sel elist > $Result_path/ipmi_eventlog_"$Test_name".txt
 			dmesg | grep -i "6.0 Gbps" > $Result_path/dmesg_ata_"$Test_name".txt
+			systemctl disable Power_cycle.service
+			systemctl stop Power_cycle.service
                         exit 0
                 fi
         else
@@ -183,6 +171,8 @@ if [ $x -eq $scsi_num ];then
                 dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" > $Result_path/dmesg_error_"$Test_name".txt
                 dmesg > $Result_path/dmesg_error_all_"$Test_name".txt
                 ipmitool sel elist > $Result_path/ipmi_eventlog_"$Test_name".txt
+		systemctl disable Power_cycle.service
+		systemctl stop Power_cycle.service
                 exit 0
         fi
 else
@@ -190,5 +180,7 @@ else
         dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" > $Result_path/dmesg_"$Test_name"_scsi_num_abnormal.txt
         dmesg > $Result_path/dmesg_"$Test_name"_scsi_num_abnormal_all.txt
         ipmitool sel elist > $Result_path/ipmi_"$Test_name"_scsi_num_abnormal_eventlog.txt
+	systemctl disable Power_cycle.service
+	systemctl stop Power_cycle.service
         exit 0
 fi
