@@ -25,7 +25,7 @@ sleep 5
 
 mkdir -p $Result_path >/dev/null 2>&1
 
-w=$( lspci | grep -i xilinx | wc -l )   
+w=$( lspci | grep -i Qualcomm | wc -l )   
 s=$( ipmitool sel list | grep -i interrupt )
 t=$( ipmitool sel list | wc -l )
 u=$( dmesg | grep -i corrected | wc -l )
@@ -118,12 +118,11 @@ if [ $x -eq $scsi_num ];then
                         dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" > $Result_path/dmesg_error_"$Test_name".txt
                         dmesg > $Result_path/dmesg_error_all_"$Test_name".txt
                         ipmitool sel elist > $Result_path/ipmi_eventlog_"$Test_name".txt
-			/home/source/Xilinx_FPGA_script/speed_numa_check_all.sh 8 > $Result_path/speed_test_fail.txt
                         exit 0
                 fi
         else
                 echo $w > $Result_path/FPGAcounterr_"$Test_name".txt
-                lspci | grep -i xilinx > $Result_path/FPGA_list_"$Test_name".txt
+                lspci | grep -i Qualcomm > $Result_path/FPGA_list_"$Test_name".txt
 		dmesg | egrep -i "error|fail|fatal|warn|wrong|bug|fault^default" > $Result_path/dmesg_error_"$Test_name".txt
                 dmesg > $Result_path/dmesg_error_all_"$Test_name".txt
                 ipmitool sel elist > $Result_path/ipmi_eventlog_"$Test_name".txt
