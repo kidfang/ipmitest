@@ -2,7 +2,7 @@
 
 Result_path=/home/source/Qualcomm-AI100/Reboot  # Path to save test log, please modify yourself
 Reboot_time=43200         # Time for your reboot or powercycle test (sec)
-scsi_num=2                # Type "lsscsi | wc -l" to chek your scsi drive number
+scsi_num=1                # Type "lsscsi | wc -l" to chek your scsi drive number
 GPU_num=3                # Type "lspci | grep -i Qualcomm | wc -l" to chek your FPGA detected amount
 Test_type=1               # Input 0 for Powercycle, 1 for Reboot test
                 
