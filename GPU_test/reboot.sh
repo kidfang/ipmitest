@@ -33,7 +33,7 @@ j=$( nvidia-smi -a | grep -i vbios | wc -l )             # Delete hashtag to Ena
 modprobe ipmi_si
 modprobe ipmi_devintf
 
-sleep 2
+sleep 5
 
 mkdir -p $Result_path >/dev/null 2>&1
 
@@ -57,6 +57,8 @@ if [ $GPU_kw = NVIDIA ]; then
 
 		MN=$( nvidia-smi -L | sed -n "$i"p | awk '{print $2}' | cut -f 1 -d ":" )
 		MC=$( nvidia-smi -a -i $MN | grep -A 1 "Max Clocks" | grep -i Graphics | awk '{print $3}' )
+		MMC=$( nvidia-smi -a -i $MN | grep -A 3 "Max Clocks" | grep -i Memory | awk '{print $3}' )
+                nvidia-smi -lmc $MMC -i $MN
 		nvidia-smi -lgc $MC -i $MN
 
 		done
@@ -71,11 +73,11 @@ if [ $z -eq 0 ];then
         touch $Result_path/rebootrec.txt
         echo 0 > $Result_path/count.txt
         date +%s > $Result_path/start_time.txt
-        sleep 1
+        sleep 5
  
 	/root/speed_numa_check_all.sh 1 > $Result_path/speed_org.txt       
 
-        sleep 1
+        sleep 5
         
         init 6
 else
