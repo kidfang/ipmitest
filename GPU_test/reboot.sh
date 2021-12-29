@@ -13,7 +13,6 @@ Test_type=1               # Input 0 for Powercycle, 1 for Reboot test
 modprobe nvidia_modeset    # Delete hashtag to Enable for NVIDIA GPU
 modprobe nvidia_drm        # Delete hashtag to Enable for NVIDIA GPU
 modprobe nvidia            # Delete hashtag to Enable for NVIDIA GPU
-nvidia-smi -pm 0           # Delete hashtag to Enable for NVIDIA GPU
 nvidia-smi -pm 1           # Delete hashtag to Enable for NVIDIA GPU
 
 j=$( nvidia-smi -a | grep -i vbios | wc -l )             # Delete hashtag to Enable for NVIDIA GPU
