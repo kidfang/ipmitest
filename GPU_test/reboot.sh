@@ -33,7 +33,7 @@ j=$( nvidia-smi -a | grep -i vbios | wc -l )             # Delete hashtag to Ena
 modprobe ipmi_si
 modprobe ipmi_devintf
 
-sleep 5
+sleep 2
 
 mkdir -p $Result_path >/dev/null 2>&1
 
@@ -71,11 +71,11 @@ if [ $z -eq 0 ];then
         touch $Result_path/rebootrec.txt
         echo 0 > $Result_path/count.txt
         date +%s > $Result_path/start_time.txt
-        sleep 5
+        sleep 1
  
 	/root/speed_numa_check_all.sh 1 > $Result_path/speed_org.txt       
 
-        sleep 5
+        sleep 1
         
         init 6
 else
