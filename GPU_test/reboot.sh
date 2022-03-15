@@ -6,7 +6,7 @@ Reboot_time=14400             # Time for your reboot or powercycle test (sec)
 scsi_num=1                    # Type "lsscsi | wc -l" to chek your scsi drive number
 GPU_kw=NVIDIA                 # Type the keyword ex. NVIDIA, AMD GPU card need change to vega
 GPU_num=8                    # Type "lspci | grep -i NVIDIA | wc -l" to chek your GPU detected amount
-GPU_N=8                      # Real GPU card number system installed
+GPU_N=8                      # Type "nvidia-smi -a | grep -i vbios | wc -l" to chek your GPU detected amount
 
 Test_type=1               # Input 0 for Powercycle, 1 for Reboot test
 
