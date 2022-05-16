@@ -76,7 +76,11 @@ case ${test_type} in
                 echo -e "\n[Qualcomm AI card]\n\n"
                 check Qualcomm
                 ;;
-
+	"b")
+                echo -e "\n[Infiniband Lan card]\n\n"
+                check Infiniband
+                ;;	
+		
 	*)
 		echo -e "\nInput what device you want to check\n
 			Nvidia_GPU=1,
@@ -97,7 +101,9 @@ case ${test_type} in
 			
 			LSI raid card=9,
 			
-			Qualcomm AI card=a
+			Qualcomm AI card=a,
+			
+			Infiniband Lan card=b
 			
 			"
 		;;
