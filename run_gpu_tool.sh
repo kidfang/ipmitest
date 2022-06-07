@@ -138,6 +138,8 @@ lspci -vvv | tee $result_output/Basic_info/lspci_vvv.txt
 #dmesg | tee $result_output/Basic_info/dmesg_all.txt
 
 ipmitool mc info | tee $result_output/Basic_info/ipmi_mc_info.txt
+ipmitool fru | tee $result_output/Basic_info/ipmi_fru.txt
+ipmitool sensor list | tee $result_output/Basic_info/ipmi_sensor_list_idle.txt
 
 }
 
