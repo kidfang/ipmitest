@@ -12,10 +12,10 @@ echo "Product BMC ip: ${bmcip}"
 num=$(ipmitool -H ${bmcip} -U $admin -P $password -I lanplus sdr elist | wc -l)
 
 for (( i=1; i<=$num; i=i+1 ));
-	do	
-		echo -e "\nTest $i/$num \n"
-		sensor=$(ipmitool -H ${bmcip} -U $admin -P $password -I lanplus sdr elist | awk '{print $1}'| sed -n "$i"p)
-		stype=$(ipmitool -H ${bmcip} -U $admin -P $password -I lanplus sensor get $sensor | grep -i "Sensor Type")
-		echo -e "$sensor          $stype \n" >> "$SUT_name"_ipmi_sdr_type.txt
-	done
-
+        do
+                echo -e "\nTest $i/$num \n"
+                sensor=$(ipmitool -H ${bmcip} -U $admin -P $password -I lanplus sdr elist | cut -f 1 -d "|" | sed -n "$i"p | sed 's/[ \t]*$//g')
+                #sensor=$(ipmitool -H ${bmcip} -U $admin -P $password -I lanplus sdr elist | awk '{print $1}'| sed -n "$i"p)
+                stype=$(ipmitool -H ${bmcip} -U $admin -P $password -I lanplus sensor get "$sensor" | grep -i "Sensor Type")
+                echo -e "$sensor          $stype \n" >> "$SUT_name"_ipmi_sdr_type.txt
+        done
