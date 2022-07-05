@@ -71,7 +71,9 @@ subscription-manager repos --enable rhel-8-for-x86_64-baseos-source-rpms
 [If show fail to find any subscription]
 
 subscription-manager list --available
+
 subscription-manager attach --pool= <pool id>
+
 subscription-manager repos --list
 
 https://access.redhat.com/discussions/4603661
