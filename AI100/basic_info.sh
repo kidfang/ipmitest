@@ -18,6 +18,7 @@ lscpu | tee $result_output/Basic_info/lscpu.txt
 
 ipmitool mc info | tee $result_output/Basic_info/ipmitool_mc_info.txt
 ipmitool sdr list | tee $result_output/Basic_info/ipmitool_sdr_list.txt
+ipmitool fru | tee $result_output/Basic_info/ipmitool_fru.txt
 
 ls -l /sys/bus/mhi/devices/mhi* | tee $result_output/Basic_info/mhi_path.txt
 sensors | tee $result_output/Basic_info/sensors.txt
