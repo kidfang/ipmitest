@@ -29,3 +29,6 @@ lstopo --of png > server.png
 
 
 DEX_to_HEX=$(echo "ibase=10;obase=16;$i"|bc)
+
+# Change password command
+passwd test
