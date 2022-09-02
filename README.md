@@ -22,6 +22,10 @@ Modify =>  ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
 
 cd /root
 
+ls -al
+
+check can find file name .bashrc
+
 vi .bashrc
 
 add htop to the last line, save ande reboot system , OS will auto run "htop" when boot into OS
