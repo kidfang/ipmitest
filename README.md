@@ -8,6 +8,22 @@ sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/ssh
 
 systemctl restart sshd 
 
+# Auto log into ubuntu
+
+sudo vi /lib/systemd/system/getty@.service
+
+Modify "ExecStart" as follows
+
+Default => ExecStart=-/sbin/agetty -o '-p -- \u' --noclear %I $TERM
+Modify =>  ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
+
+# Run command when power on system
+
+cd /root
+vi .bashrc
+
+add htop to the last line, save ande reboot system , OS will auto run "htop" when boot into OS
+
 # Samba_server_under_centos
 if connect to smba folder failed please restart samba service and retry
 
