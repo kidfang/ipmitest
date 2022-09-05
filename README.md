@@ -40,6 +40,16 @@ systemctl restart nmb.service
 # Update Ubuntu 18.04.3 kernel
 sudo apt-get install --install-recommends linux-generic-hwe-18.04
 
+# wget fail
+
+if get error as follows
+
+Unable to establish SSL connection.
+
+add "–no-check-certificate" can resolved
+
+wget –no-check-certificate 
+
 # Update CentOS kernel
 http://elrepo.org/tiki/tiki-index.php
 
