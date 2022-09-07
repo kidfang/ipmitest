@@ -86,7 +86,7 @@ echo -e "Update Flash Path: $FW_path\n"
 chmod -R 777 $FW_path
 echo -e "Start Flash FW script: $FW_script"
 
-if [ $v -eq 0 ];then  ## Check ipmi sel log no interrupt event
+if [ $v -eq 0 ];then  
 
 	if [ $During_time -le $Reboot_time ] && [ $y -le $t_times  ];then  ## Check test time and times all not reach setting value
                                 
@@ -97,8 +97,8 @@ if [ $v -eq 0 ];then  ## Check ipmi sel log no interrupt event
 		yes n | ./$FW_script 2>&1 > $Result_path/flash_log.txt
 		sleep 10
 
-		ipmi_fw 1
-		a_now_fw=$( echo $now_fw_1s$Dex_now_fw_2s | sed -e 's/\.//g' )
+#		ipmi_fw 1
+#		a_now_fw=$( echo $now_fw_1s$Dex_now_fw_2s | sed -e 's/\.//g' )
 
 		while :
 		do
@@ -119,11 +119,10 @@ if [ $v -eq 0 ];then  ## Check ipmi sel log no interrupt event
                 fi
 		done
 
-                ipmi_fw 1
-                a_now_fw=$( echo $now_fw_1s$Dex_now_fw_2s | sed -e 's/\.//g' )
+ #              ipmi_fw 1
+ #              a_now_fw=$( echo $now_fw_1s$Dex_now_fw_2s | sed -e 's/\.//g' )
 
-
-		if [ $flash_fw -eq $a_now_fw ];then ## check BMC FW are the same with Update BMC FW
+		if [ $flash_fw -eq $a_now_fw ];then 
 
 			date >> $Result_path/rebootrec.txt
 			echo "PASS" >> $Result_path/rebootrec.txt
