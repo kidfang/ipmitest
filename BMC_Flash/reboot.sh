@@ -47,9 +47,9 @@ Start_time=$(cat $Result_path/start_time.txt)
 End_time=$(date +%s)
 During_time=$(($End_time-$Start_time))
 
-echo $Start_time
-echo $End_time
-echo $During_time
+#echo $Start_time
+#echo $End_time
+#echo $During_time
 
 ## Check BMC FW
 
@@ -94,12 +94,12 @@ if [ $v -eq 0 ];then
 
         	cd $FW_path 
 		sleep 20
-		yes n | ./$FW_script 2>&1 > $Result_path/flash_log.txt
+		yes | ./$FW_script 2>&1 > $Result_path/flash_log.txt
 		sleep 10
 
 #		ipmi_fw 1
 #		a_now_fw=$( echo $now_fw_1s$Dex_now_fw_2s | sed -e 's/\.//g' )
-
+		rck=0
 		while :
 		do
 
@@ -110,10 +110,12 @@ if [ $v -eq 0 ];then
                         echo "GO!"
 			break
                 else
-			echo "rechek!" >> $Result_path/fail_check.txt
+			rck=$((rck+1))
+			echo "rechek!" >> $Result_path/recheck.txt
+			mv $Result_path/flash_log.txt $Result_path/flash_log_$rck.txt
 			cd $FW_path
 	                sleep 20
-        	        yes n | ./$FW_script 2>&1 > $Result_path/flash_log.txt
+        	        yes | ./$FW_script 2>&1 > $Result_path/flash_log.txt
                 	sleep 10
 			continue
                 fi
