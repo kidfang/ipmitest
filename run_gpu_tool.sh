@@ -115,6 +115,7 @@ amd_basic_info()
 mkdir $result_output/Basic_info
 
 rocm-smi | tee $result_output/Basic_info/rocm_smi.txt
+rocm-smi --showbus | tee $result_output/Basic_info/rocm_smi_pci_addr.txt
 rocm-smi -a | tee $result_output/Basic_info/rocm_smi_a.txt
 rocm-smi -v | tee $result_output/Basic_info/rocm_smi_v.txt
 rocm-smi --showhw | tee $result_output/Basic_info/rocm_smi_hw.txt
