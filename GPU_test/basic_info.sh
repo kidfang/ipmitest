@@ -26,3 +26,5 @@ ipmitool mc info | tee $result_output/Basic_info/ipmi_mc_info.txt
 ipmitool fru print | tee $result_output/Basic_info/ipmi_fru_print.txt
 ipmitool sensor list  | tee $result_output/Basic_info/ipmi_sensor_list_idle.txt
 ipmitool chassis status | tee $result_output/Basic_info/ipmi_power_restore_policy.txt
+
+numactl -H | tee $result_output/Basic_info/numactl_hardware.txt
