@@ -79,8 +79,11 @@ case ${test_type} in
 	"b")
                 echo -e "\n[Infiniband Lan card]\n\n"
                 check Infiniband
-                ;;	
-		
+                ;;
+	"c")
+                echo -e "\n[ASMedia M.2/BPB SATA RAID Controller]\n\n"
+                check ASMedia
+                ;;		
 	*)
 		echo -e "\nInput what device you want to check\n
 			Nvidia_GPU=1,
@@ -103,8 +106,10 @@ case ${test_type} in
 			
 			Qualcomm AI card=a,
 			
-			Infiniband Lan card=b
-			
+			Infiniband Lan card=b,
+		
+			ASMedia M.2/BPB SATA RAID Controller=c
+		
 			"
 		;;
 esac
