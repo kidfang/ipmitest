@@ -4,6 +4,7 @@ mkdir $result_output/Basic_info
 
 nvidia-smi | tee $result_output/Basic_info/nvidia_smi.txt
 nvidia-smi -a | tee $result_output/Basic_info/nvidia_smi_a.txt
+nvidia-smi -a | egrep -i "GPU 0000|Product Name|Board Part Number|Serial Number|GPU UUID|Image Version|VBIOS Version" | tee $result_output/Basic_info/nvidia_smi_a_SN.txt
 nvidia-smi -q | tee $result_output/Basic_info/nvidia_smi_q.txt
 nvidia-smi -q | grep -i vbios | tee $result_output/Basic_info/nvidia_smi_vbios.txt
 nvidia-smi topo -m | tee $result_output/Basic_info/nvidia_smi_topo.txt
@@ -19,6 +20,7 @@ lspci -tv | tee $result_output/Basic_info/lspci_tv.txt
 lscpu | tee $result_output/Basic_info/lscpu.txt
 
 lspci -vvvd 10de: | tee $result_output/Basic_info/lspci_10de.txt
+lspci -n | grep -i 10de | tee $result_output/Basic_info/lspci_VID_DID.txt 
 lspci | tee $result_output/Basic_info/lspci.txt
 lspci -vvv | tee $result_output/Basic_info/lspci_vvv.txt
 
