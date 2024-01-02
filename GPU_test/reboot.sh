@@ -29,6 +29,7 @@ j=$( nvidia-smi -a | grep -i vbios | wc -l )             # Delete hashtag to Ena
 ###################################################################
 ###################################################################
 
+##modprobe ipmi_ssif
 modprobe ipmi_si
 modprobe ipmi_devintf
 
