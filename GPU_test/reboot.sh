@@ -128,7 +128,7 @@ if [ $x -eq $scsi_num ];then
 
                                 if [ $During_time -le $Reboot_time ];then
                                         if [ $Test_type -eq 0 ];then
-                                                sleep 10
+                                                sleep 20
                                                 ipmitool chassis power cycle
 
 						sleep 10
