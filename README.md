@@ -55,6 +55,8 @@ http://elrepo.org/tiki/tiki-index.php
 
 http://blog.itist.tw/2016/03/how-to-upgrade-newest-kernel-on-centos-7.html
 
+https://www.cnblogs.com/sysin/p/15666018.html
+
 yum install https://www.elrepo.org/elrepo-release-8.0-2.el8.elrepo.noarch.rpm
 
 rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
