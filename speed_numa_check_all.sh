@@ -84,6 +84,10 @@ case ${test_type} in
                 echo -e "\n[ASMedia M.2/BPB SATA RAID Controller]\n\n"
                 check ASMedia
                 ;;		
+	"d")
+                echo -e "\n[Rebellions ATOM AI card RBLN-CA2]\n\n"
+                check 1eff:0010
+                ;;
 	*)
 		echo -e "\nInput what device you want to check\n
 			Nvidia_GPU=1,
@@ -109,6 +113,8 @@ case ${test_type} in
 			Infiniband Lan card=b,
 		
 			ASMedia M.2/BPB SATA RAID Controller=c
+
+   			Rebellions ATOM AI card RBLN-CA2=d
 		
 			"
 		;;
