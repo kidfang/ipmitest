@@ -88,6 +88,10 @@ case ${test_type} in
                 echo -e "\n[Rebellions ATOM AI card RBLN-CA2]\n\n"
                 check 1eff:0010
                 ;;
+	"e")
+                echo -e "\n[Grace Hopper/Blackwell GPU Device]\n\n"
+                check 3D
+                ;;
 	*)
 		echo -e "\nInput what device you want to check\n
 			Nvidia_GPU=1,
