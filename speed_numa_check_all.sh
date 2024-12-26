@@ -124,6 +124,10 @@ case ${test_type} in
 			ASMedia M.2/BPB SATA RAID Controller=c
 
    			Rebellions ATOM AI card RBLN-CA2=d
+
+      			Grace Hopper/Blackwell GPU Device=e
+
+  			The device user type=z
 		
 			"
 		;;
