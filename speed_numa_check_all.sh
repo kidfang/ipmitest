@@ -94,7 +94,7 @@ case ${test_type} in
                 check 3D
                 ;;
 	"z")
-                echo -e "\n[User checking...]\n\n"
+                echo -e "\n["$2" Device]\n\n"
                 check $2
                 ;;
 	*)
