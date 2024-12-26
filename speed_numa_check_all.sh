@@ -1,6 +1,7 @@
 #!/bin/bash
 
 test_type=$1
+read_type=$2
 
 check()
 
@@ -91,6 +92,10 @@ case ${test_type} in
 	"e")
                 echo -e "\n[Grace Hopper/Blackwell GPU Device]\n\n"
                 check 3D
+                ;;
+	"z")
+                echo -e "\n[User checking...]\n\n"
+                check $2
                 ;;
 	*)
 		echo -e "\nInput what device you want to check\n
