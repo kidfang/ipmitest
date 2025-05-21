@@ -73,7 +73,7 @@ ex: grub2-set-default 2
 
 subscription-manager register --username xxxxx --password xxxxx
 
-subscription-manager attach --auto
+[No use at RHEL10] subscription-manager attach --auto
 
 [HTTP error issue solved]
 
@@ -104,6 +104,9 @@ subscription-manager repos --enable rhel-8-for-x86_64-baseos-source-rpms
 
 [RHEL9]
 subscription-manager repos --enable rhel-9-for-x86_64-baseos-source-rpms
+
+[RHEL10]
+subscription-manager repos --enable rhel-10-for-x86_64-baseos-source-rpms
 
 [RHEL9-ARM]
 subscription-manager repos --enable rhel-9-for-aarch64-baseos-source-rpms
